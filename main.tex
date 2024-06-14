@@ -152,7 +152,7 @@ In general, \textbf{the probability distribution of sums of independent random v
 
 The Geometric Distribution is a discrete probability distribution that models the number of trials needed to achieve the first success in a sequence of independent Bernoulli trials, each with the same success probability \( p \).
 
-\subsection*{Probability Distribution Function (PDF)}
+\subsection*{Probability Distribution Function (PDF)}\label{subsection:geometric_pdf}
 
 The Probability Distribution Function (PDF) of a Geometric Distribution gives the probability that the first success occurs on the \( t \)-th trial. It is defined as:
 \begin{equation}
@@ -221,34 +221,95 @@ Since we model the generation of single-hop entanglement by attempts which succe
     \Pr(T_0 = t) = p_{\text{gen}} (1 - p_{\text{gen}})^{t-1} \quad \text{for} \quad t \in \{1, 2, 3, \ldots \}.
 \end{equation}
 
+% tocheck: is it more convenient to specify T_0 by its CDF? I think in David paper is not like this
 For what follows, it will be more convenient to specify $T_0$ by its \hyperref[subsection:geometric_cdf]{cumulative distribution function} (CDF), which is given by
 \begin{equation}
     \Pr(T_0 \leq t) = 1 - (1 - p_{\text{gen}})^t.
 \end{equation}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.2\linewidth]{images/gen.png}
+    \caption{For two segments, $T_0$ represents the waiting time for the generation of a single link between two nodes without any intermediate repeater nodes.}
+    \label{fig:gen}
+\end{figure}
+
 
 \subsection*{Werner Parameter for Elementary Entanglement}
 ... % TODO
 
 \section*{Entanglement Swapping}
 
-Once we have generated elementary entanglement, we can use it to create entanglement over longer distances by entanglement swapping.
-
+Once we have generated elementary entanglement, we can use it to \textbf{create entanglement over longer distances by entanglement swapping}.
 We defined $T_0$ as the waiting time for the generation of elementary entanglement, and our base for the induction.
-
 We now define our inductive step assuming that we have found an expression for $T_n$ and we want to construct $T_{n+1}$. 
 
 In order to perform the entanglement swap to produce a single $(2^n+1)$-hop link, a node needs to wait for the production of two $(2^n)$-hop links, one on each side. 
 
 Denote the waiting time for the pairs by $T_n^{(A)}$ and $T_n^{(B)}$, both of which are i.i.d. with $T_n$, as they are \hyperref[paragraph:copies_of_a_random_variable]{copies} of it. 
 
-The time until both pairs are available is now given by
+\subsubsection*{Time until both pairs are available}
+
+We introduce a new random variable $M_n$ modeling the time until both pairs are available
 \begin{equation}
     M_n := \max(T_n^{(A)} , T_n^{(B)})
 \end{equation}
+which is also \textbf{the time at which the entanglement swap ends}. 
 
-which is distributed according to
+This is distributed according to the CDF
 \begin{equation}
     \Pr(M_n \leq t) = \Pr(T_n^{(A)} \leq t \text{ and } T_n^{(B)} \leq t) = \Pr(T_n \leq t) ^ 2.
 \end{equation}
+
+From it, we can derive the PDF
+\begin{align}\label{eq:pdf_waiting_time_pair}
+    \Pr(M_n = t) &= \sum_{\substack{t_A, t_B: \\ t = \max(t_A, t_B)}} \Pr(T_n^{(A)} = t_A \text{ and } T_n^{(B)} = t_B) .
+\end{align}
+
+% todo: add a concrete example coming from the code, with \Pr(T_n^{(A)} = t_A), \Pr(T_n^{(B)} = t_B and \Pr(M_n = t)
+
+\subsubsection*{Number of steps required}
+
+We introduce now $K_n$, a random variable following a \hyperref[subsection:geometric_pdf]{geometric distribution}
+\begin{equation}
+    \Pr(K_n = k) = p_{swap} (1 - p_{swap})^{k-1}
+\end{equation}
+modeling \textbf{the number of steps $k$ until the first successful swap} at level $n$.
+
+The fact that it follows a geometric distribution is a direct consequence of our choice to model the success probability $p_{swap}$ to be independent of the state of the two input links. 
+
+\subsubsection*{Derivation of $T_{n+1}$}
+The derivation of $T_{n+1}$ requires us to combine the random variable for the number of steps required $K_n$ and the random variable for the waiting time for one attempt $M_n$.
+
+In order to find the relation between $M_n$ and $T_{n+1}$, note that when entanglement swap fails, the two input are lost and need to be
+regenerated. The regeneration of fresh entanglement after each failing entanglement swap adds to the waiting time. 
+
+Thus, $T_{n+1}$ is a \textit{compound random variable}: it is the sum of $K_n$ copies of $M_n$. 
+
+Since the number of entanglement swaps $K_n$ is geometrically distributed, we say that $T_{n+1}$ is a \textit{geometric compound sum} of $K_n$ copies of $M_n$, denoted as
+\begin{equation}
+    T_{n+1}=\sum_{k=1}^{K_{n}} M_{n}^{(k)}
+\end{equation}
+
+\subsubsection*{Derivation of the PDF of $T_{n+1}$}
+
+The probability distribution of the waiting time $T_{n+1}$
+\begin{align}
+    \Pr(T_{n+1} = t) &= \Pr\left[\sum_{k=1}^{K_{n}} M_{n}^{(k)} = t\right] \\
+    \intertext{is computed as the marginal of the waiting time conditioned on a fixed number of swaps}
+    &= \sum_{k=1}^{\infty} \Pr(K_{n} = k) \cdot \Pr\left[\left( \sum_{j=1}^{k} M_{n}^{(j)} \right) = t\right].
+\end{align}
+
+We know $K_n$ is a geometric distribution and we know that the sum of probability distributions is the convolution.
+
+Therefore, we can factor the constant out and get
+\begin{equation}
+    \Pr(T_{n+1} = t) = \sum_{k=1}^{\infty} p_{\text{swap}}(1 - p_{\text{swap}})^{k-1} \left( \ast_{j=1}^{k} m \right)
+\end{equation}
+where
+\begin{equation*}
+    m(t) := \Pr(M = t) = \sum_{\substack{t_A, t_B: \\ t = \max(t_A, t_B)}} \Pr(T_n^{(A)} = t_A \text{ and } T_n^{(B)} = t_B)
+\end{equation*}
+directly from \hyperref[eq:pdf_waiting_time_pair]{(29)}
 
 \end{document}
