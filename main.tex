@@ -8,6 +8,7 @@
 \usepackage{braket}
 \usepackage{float}
 \usepackage[toc,page]{appendix}
+\usepackage{listings}
 
 \begin{document}
 
@@ -46,7 +47,7 @@ Thus, convolution is used to determine the probability distribution of the sum o
 Consider this simple example. Let $X$ and $Y$ discrete independent random variables. 
 
 The probability distribution $\Pr(Z = z)$ of the random variable $Z = X + Y$ is computed as follows:
-\begin{equation}
+\begin{equation*}
     \begin{array}{|c|c|c|c|c|c|c|}
         \hline
         x & \Pr(X = x) & y & \Pr(Y = y) & z & \Pr(Z = z) & \text{Derivation of }\Pr(Z = z)\\
@@ -62,7 +63,7 @@ The probability distribution $\Pr(Z = z)$ of the random variable $Z = X + Y$ is 
          &  &  &  & 4 & 0.09 & 0.3 \cdot 0.3 \\
         \hline
     \end{array}
-\end{equation}
+\end{equation*}
 
 Note that $\Pr(Z = z)$ has five elements (all the possible sums), and it is valid as its probabilities sum to 1.
 
@@ -146,6 +147,7 @@ But since $y = z - x$ this is equivalent to
 which is the convolution of the distributions $p_X$ and $p_Y$, denoted as $p_Z = p_X * p_Y$ \hyperref[eq:convolution]{(see convolution)}.
 
 Since convolution operator $*$ is associative, writing $a * b * c$ is well-defined, for functions $a$, $b$, $c$ from the nonnegative integers to the real numbers \hyperref[page:convolution_associativity]{(see associativity of convolution)}.
+
 In general, \textbf{the probability distribution of sums of independent random variables equals the convolutions of their individual probability distribution functions}.
 
 \section*{Geometric Distribution}\label{section:geometric_distribution}
@@ -159,9 +161,11 @@ The Probability Distribution Function (PDF) of a Geometric Distribution gives th
     \Pr(T = t) = p (1 - p)^{t-1} \quad \text{for} \quad t \in \{1, 2, 3, \ldots \},
 \end{equation}
 where:
-- \( T \) is the random variable representing the trial number of the first success,
-- \( p \) is the probability of success on each trial,
-- \( (1 - p) \) is the probability of failure on each trial.
+\begin{itemize}
+    \item $T$ is the random variable representing the trial number of the first success,
+    \item $p$ is the probability of success on each trial,
+    \item $(1 - p)$ is the probability of failure on each trial.
+\end{itemize}
 
 This formula expresses that the first \( t-1 \) trials must be failures (each occurring with probability \( 1 - p \)), and the \( t \)-th trial must be a success (with probability \( p \)).
 
@@ -175,14 +179,14 @@ The Cumulative Distribution Function (CDF) of a Geometric Distribution gives the
 \paragraph*{Derivation of the CDF}
 
 This is the derivation of the CDF of a Geometric Distribution, from its PDF
-\begin{align}
+\begin{align*}
     \Pr(T \leq t) &= 1 - \Pr(T > t) \\
     &= 1 - \sum_{k=t+1} \Pr(T = k) \\
     &= 1 - \left\{p (1 - p)^t + p (1 - p)^{t+1} + p (1 - p)^{t+2} + \ldots\right\} \\
     &= 1 - p (1 - p)^t \sum_{k=0} (1 - p)^k \\
     &= 1 - (1 - p)^t \sum_{k=0} p (1 - p)^k \\
     &= 1 - (1 - p)^t.
-\end{align}
+\end{align*} % tocheck
 
 This CDF formula indicates the probability that the first success occurs within the first \( t \) trials.
 
@@ -205,10 +209,9 @@ Note that all operations in the repeater chain protocols we study
 \end{itemize}
 take a duration that is a multiple of ${L_0}/{c}$, the time to send information over a single segment.
 
-For this reason, it is common to denote the waiting time in \textbf{discrete units} of ${L_0}/{c}$, which is a convention we comply with for $T_n$.
+For this reason, it is common to denote the waiting time in \textbf{discrete units} of ${L_0}/{c}$, which is a convention we comply with for $T_n$. Cutoffs as well follow the same discrete units. % tocheck
 
-Regarding cutoffs, ... % TODO
-
+\newpage
 \section*{Heraldeld Entanglement Generation}
 
 \subsection*{Waiting Time for Elementary Entanglement}
@@ -221,7 +224,7 @@ Since we model the generation of single-hop entanglement by attempts which succe
     \Pr(T_0 = t) = p_{\text{gen}} (1 - p_{\text{gen}})^{t-1} \quad \text{for} \quad t \in \{1, 2, 3, \ldots \}.
 \end{equation}
 
-% tocheck: is it more convenient to specify T_0 by its CDF? I think in David paper is not like this
+% tocheck: is it really more convenient to specify T_0 by its CDF? I think in David paper is not like this
 For what follows, it will be more convenient to specify $T_0$ by its \hyperref[subsection:geometric_cdf]{cumulative distribution function} (CDF), which is given by
 \begin{equation}
     \Pr(T_0 \leq t) = 1 - (1 - p_{\text{gen}})^t.
@@ -236,8 +239,45 @@ For what follows, it will be more convenient to specify $T_0$ by its \hyperref[s
 
 
 \subsection*{Werner Parameter for Elementary Entanglement}
-... % TODO
 
+The output state for the generation is a Werner state with Werner parameter $w_0$. 
+
+\subsection*{Numerical Examples}
+
+To plot the CDF and PDF of the waiting time for the entanglement generation protocol, we can use the following code snippet:
+% todo: rework the style of the code snippet
+\begin{lstlisting}[language=Python]
+def entanglement_generation(p_gen=0.5, t_trunc=20):
+    parameters = {
+        # A protocol is represented by a tuple of 0 and 1,
+        # where 0 stands for swap and 1 stands for distillation.
+        # This example is a 0-level swap protocol,
+        # as we consider only the entanglement generation.
+        "protocol": (),
+        # success probability of entanglement generation
+        "p_gen": p_gen,
+        # truncation time for the repeater scheme.
+        # It should be increased to cover more time step
+        # if the success proability decreases.
+        # Commercial hardware can easily handle up to t_trunc=1e5
+        "t_trunc": t_trunc,
+        "w0": 0.98, # ignore this for the sake of the example
+        "p_swap": 0.5  # ignore this as well
+    }
+    pmf, _ = repeater_sim(parameters)
+    return pmf
+\end{lstlisting}
+The following figures show the CDF and PDF of the waiting time for the entanglement generation protocol, with $p_{\text{gen}} = 0.2$ and $p_{\text{gen}} = 0.5$. We can see that the waiting time is \textbf{distributed according to a geometric distribution}, as expected.
+
+In order for the algorithm to be computationally feasible, \textbf{the waiting time is truncated}, in this case at $t = 20$. The parameter $t_{trunc}$ in the algorithm should chosen to be large enough to capture the bulk of the distribution, but small enough to keep the computation time reasonable. The truncation brings to an approximation of the distribution, as the probability of waiting for more than 20 units of time is not considered: this is more visible in the top plot, where the CDF is less close to 1 at $t = 20$.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\linewidth]{images/gen_example_20.png}
+    \caption{CDF and PDF of the waiting time for the entanglement generation protocol, with $p_{gen} = 0.2$ (top) and $p_{gen} = 0.5$ (bottom).}
+\end{figure}
+
+\newpage
 \section*{Entanglement Swapping}
 
 Once we have generated elementary entanglement, we can use it to \textbf{create entanglement over longer distances by entanglement swapping}.
@@ -247,6 +287,8 @@ We now define our inductive step assuming that we have found an expression for $
 In order to perform the entanglement swap to produce a single $(2^n+1)$-hop link, a node needs to wait for the production of two $(2^n)$-hop links, one on each side. 
 
 Denote the waiting time for the pairs by $T_n^{(A)}$ and $T_n^{(B)}$, both of which are i.i.d. with $T_n$, as they are \hyperref[paragraph:copies_of_a_random_variable]{copies} of it. 
+
+\subsection*{Waiting Time for Entanglement Swapping}
 
 \subsubsection*{Time until both pairs are available}
 
@@ -271,7 +313,7 @@ From it, we can derive the PDF
 \subsubsection*{Number of steps required}
 
 We introduce now $K_n$, a random variable following a \hyperref[subsection:geometric_pdf]{geometric distribution}
-\begin{equation}
+\begin{equation}\label{eq:pdf_swap_steps}
     \Pr(K_n = k) = p_{swap} (1 - p_{swap})^{k-1}
 \end{equation}
 modeling \textbf{the number of steps $k$ until the first successful swap} at level $n$.
@@ -282,7 +324,7 @@ The fact that it follows a geometric distribution is a direct consequence of our
 The derivation of $T_{n+1}$ requires us to combine the random variable for the number of steps required $K_n$ and the random variable for the waiting time for one attempt $M_n$.
 
 In order to find the relation between $M_n$ and $T_{n+1}$, note that when entanglement swap fails, the two input are lost and need to be
-regenerated. The regeneration of fresh entanglement after each failing entanglement swap adds to the waiting time. 
+regenerated. The regeneration of fresh entanglement after each failing entanglement swap \textbf{adds to the waiting time}. 
 
 Thus, $T_{n+1}$ is a \textit{compound random variable}: it is the sum of $K_n$ copies of $M_n$. 
 
@@ -295,21 +337,106 @@ Since the number of entanglement swaps $K_n$ is geometrically distributed, we sa
 
 The probability distribution of the waiting time $T_{n+1}$
 \begin{align}
-    \Pr(T_{n+1} = t) &= \Pr\left[\sum_{k=1}^{K_{n}} M_{n}^{(k)} = t\right] \\
+    \Pr(T_{n+1} = t) &= \Pr\left[\sum_{k=1}^{K_{n}} M_{n}^{(k)} = t\right] \nonumber \\
     \intertext{is computed as the marginal of the waiting time conditioned on a fixed number of swaps}
-    &= \sum_{k=1}^{\infty} \Pr(K_{n} = k) \cdot \Pr\left[\left( \sum_{j=1}^{k} M_{n}^{(j)} \right) = t\right].
+    \Pr(T_{n+1} = t) &= \sum_{k=1}^{\infty} \Pr(K_{n} = k) \cdot \Pr\left[\left( \sum_{j=1}^{k} M_{n}^{(j)} \right) = t\right].
 \end{align}
 
-We know $K_n$ is a geometric distribution and we know that the sum of probability distributions is the convolution.
-
-Therefore, we can factor the constant out and get
+Plugging in the expressions for $\Pr(K_n = k)$ \hyperref[eq:pdf_swap_steps]{(...)} and recalling that the sum of $k$ copies of $M_n$ can be expressed as a \hyperref[eq:convolution]{convolution}, we get
 \begin{equation}
     \Pr(T_{n+1} = t) = \sum_{k=1}^{\infty} p_{\text{swap}}(1 - p_{\text{swap}})^{k-1} \left( \ast_{j=1}^{k} m \right)
 \end{equation}
-where
+where, from \hyperref[eq:pdf_waiting_time_pair]{(...)}
 \begin{equation*}
-    m(t) := \Pr(M = t) = \sum_{\substack{t_A, t_B: \\ t = \max(t_A, t_B)}} \Pr(T_n^{(A)} = t_A \text{ and } T_n^{(B)} = t_B)
+    m(t) := \Pr(M = t) = \sum_{\substack{t_A, t_B: \\ t = \max(t_A, t_B)}} \Pr(T_n^{(A)} = t_A \text{ and } T_n^{(B)} = t_B) .
 \end{equation*}
-directly from \hyperref[eq:pdf_waiting_time_pair]{(29)}
+
+\subsection*{Werner Parameter for Entanglement Swapping}
+
+Considering two entangled pairs, respectively with werner parameters $w_A$ and $w_B$, the output werner parameter $w_{out}$, if we do not consider decoherence, will be % todo: for the thesis, cref werner parameter
+\begin{equation}
+    w_{out} = w_A \cdot w_B .
+\end{equation}
+
+However, when the first of the two pairs is generated, it has to wait for the elementary generation of the other; \textbf{during this time the first generated pair decoheres}. In particular, a Werner state $\rho(w)$ residing in memory for a time $\Delta(t)$ will transform into the Werner state $\rho(w_{decayed})$ with 
+\begin{equation}
+    w_{\text{decayed}} = w \cdot e^{-\Delta t / T_{coh}}
+\end{equation}
+where $T_{coh}$ is the joint coherence time of the two quantum memories holding the qubits. % todo: expand
+
+Denote by $A$ and $B$ the input links to the entanglement swap and denote by $\left(t_{A}, w_{A}\right)$ and $\left(t_{B}, w_{B}\right)$ their respective delivery times and Werner parameters. 
+% todo: add image
+Without loss of generality, suppose that the link $A$ is produced after link $B$, i.e. $t_{A} \geq t_{B}$. 
+
+Link $A$ is produced last, so the entanglement swap will be performed directly after its generation and hence link $A$ will enter the entanglement swap with Werner parameter $w_{A}$. Link $B$ is produced earliest and will therefore decohere until production of link $A$.
+
+It follows that $B$'s Werner parameter decoheres accordingly to (??): $w_B$, immediately before the swap, is equal to
+\begin{equation*}
+    w_{B}^{\prime} = w_{B} \cdot e^{-\left|t_{A}-t_{B}\right| / T_{coh}} .
+\end{equation*}
+
+Thus, the entanglement swap would produce the $2^{n+1}$-hop state with Werner parameter
+\begin{align}
+w_{out} &= w_{A} \cdot w_{B}^{\prime} \nonumber \\
+        &= w_{A} \cdot w_{B} \cdot e^{-\left|t_{A}-t_{B}\right| / T_{coh}} .
+\end{align}
+
+Notice that choosing $t_{A} > t_{B}$ would have lead to the same result.
+
+In order to model at the same time the Werner Parameter and the Waiting Time we use a joint random variable $(T_n, W_n)$.
+
+For a single segment ($n=0$), we are in the, already discussed, entanglement generation phase. % cite it
+Here, the waiting time and Werner parameter are uncorrelated because we model the attempts at generating single-hop entanglement to be independent and to each take equally long. 
+
+At the recursive step, we model the waiting time and Werner parameter as a joint random variable $(T_n, W_n)$ as
+\begin{equation}
+    (T_{n+1}, W_{n+1}) := \sum_{k=1}^{K_n} (M_n, V_n)^{(k)}. % todo: Im skipping the concept of forgetting sum, so let's see what to do here
+\end{equation}
+
+The auxiliary joint random variable $(M_n, V_n)$ is defined as
+\begin{equation}
+    (M_n, V_n) := g\left((T_n, W_n)^{(A)}, (T_n, W_n)^{(B)}\right).
+\end{equation}
+
+The function $g$ is given by
+\begin{equation}
+    g\left((t_A, w_A),(t_B, w_B)\right) := \left(g_T(t_A, t_B), g_W\left((t_A, w_A),(t_B, w_B)\right)\right),
+\end{equation}
+where $g_T$ is defined in eq. 10 and % todo: I wrote that is the maximum before, adapt it
+\begin{equation}
+    g_W\left((t_A, w_A),(t_B, w_B)\right) := w_A \cdot w_B \cdot e^{-\frac{|t_A-t_B|}{T_{\text{coh}}}}
+\end{equation}
+with $T_{\text{coh}}$ the quantum memory coherence time.
+
+We already studied the expression for the waiting time $T_{n+1}$. The other random variable $W_{n+1}$ directly derives from $V_{n}$, which expresses the Werner parameter of the produced $2^{n+1}$-hop link in case the swap is successful.
+
+To prove that $V_{n}$ is formulated properly, we argue that $g_{W}$ correctly computes the Werner parameter of the output link after an entanglement swap.
+
+If the entanglement swap fails, then the $2^{n+1}$-hop link with its Werner parameter will never be produced since both initial $2^{n}$-hop entangled pairs are lost. Instead, two fresh $2^{n}$-hop links will be generated. 
+
+In order to find how the Werner parameter on level $n+1$ is expressed as a function of the waiting times and Werner parameters at level $n$, consider a sequence $\left(m_{j}, v_{j}\right)$ of waiting times $m_{j}$ and Werner parameters $v_{j}$, where $j$ runs from 1 to the first successful swap $k$. 
+\begin{itemize}
+    \item $m_{j}$ correspond to the waiting time until the end of the entanglement swap that transforms two $2^{n}$-hop links into a single $2^{n+1}$-hop link
+    \item $v_{j}$ to the output link's Werner parameter if the swap were successful. 
+\end{itemize}
+
+From previus results, we found that the total waiting time is given by $\sum_{j=1}^{k} m_{j}$, the sum of the duration of the production of the lost pairs (see ??). 
+
+Note, however, that the Werner parameter of the $2^{n+1}$ hop link \textbf{is only influenced by the links that the successful entanglement swap acted upon}. Since the entanglement swaps are performed until the first successful one, the output link is the last produced link and therefore its Werner parameter equals $v_{k}$. 
+
+We thus find that the waiting time $t_{\text {final }}$ of the first $2^{n+1}$-hop link and its Werner parameter $w_{\text {final }}$ are given by:
+\begin{align}
+    t_{final} &= \sum_{j=1}^{k} m_{j} \\ 
+    w_{final} &= v_k 
+\end{align}
+or, in a more compact form
+\begin{equation}
+    \left(t_{final}, w_{final}\right) = \left(\sum_{j=1}^{k} m_{j}, v_{k}\right) .
+\end{equation}
+
+Taking into account that the number of swaps $k$ that need to be performed until the first successful one is an instance of the random variable $K_{n}$, we arrive at the full recursive expression for the waiting time and Werner parameter at level $n+1$ as given in eq. (??). % todo: cite eq.
+
+\subsection*{Numerical Examples}
+
 
 \end{document}
