@@ -713,6 +713,11 @@ INPUT ./images/gen_example_20.png
 INPUT images/gen_example_20.png
 INPUT ./images/gen_example_20.png
 INPUT ./images/gen_example_20.png
+INPUT ./images/swap_example_8000.png
+INPUT ./images/swap_example_8000.png
+INPUT images/swap_example_8000.png
+INPUT ./images/swap_example_8000.png
+INPUT ./images/swap_example_8000.png
 INPUT main.aux
 INPUT ./main.out
 INPUT ./main.out
