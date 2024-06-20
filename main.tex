@@ -8,7 +8,8 @@
 \usepackage{braket}
 \usepackage{float}
 \usepackage[toc,page]{appendix}
-\usepackage{listings}
+
+\input{listings_config.tex}
 
 \begin{document}
 
@@ -212,7 +213,7 @@ take a duration that is a multiple of ${L_0}/{c}$, the time to send information 
 For this reason, it is common to denote the waiting time in \textbf{discrete units} of ${L_0}/{c}$, which is a convention we comply with for $T_n$. Cutoffs as well follow the same discrete units. % tocheck
 
 \newpage
-\section*{Heraldeld Entanglement Generation}
+\section*{Heraldeld Entanglement Generation}\label{section:heralded_entanglement_generation}
 
 \subsection*{Waiting Time for Elementary Entanglement}
 In modeling the random variable $T_n$, which represents the waiting time in a $2^n$ segment repeater chain, we can reason by induction.
@@ -245,13 +246,12 @@ The output state for the generation is a Werner state with Werner parameter $w_0
 \subsection*{Numerical Examples}
 
 To plot the CDF and PDF of the waiting time for the entanglement generation protocol, we can use the following code snippet:
-% todo: rework the style of the code snippet
 \begin{lstlisting}[language=Python]
 def entanglement_generation(p_gen=0.5, t_trunc=20):
     parameters = {
-        # A protocol is represented by a tuple of 0 and 1,
+        # a protocol is represented by a tuple of 0 and 1,
         # where 0 stands for swap and 1 stands for distillation.
-        # This example is a 0-level swap protocol,
+        # this example is a 0-level swap protocol,
         # as we consider only the entanglement generation.
         "protocol": (),
         # success probability of entanglement generation
@@ -260,13 +260,12 @@ def entanglement_generation(p_gen=0.5, t_trunc=20):
         # It should be increased to cover more time step
         # if the success proability decreases.
         # Commercial hardware can easily handle up to t_trunc=1e5
-        "t_trunc": t_trunc,
-        "w0": 0.98, # ignore this for the sake of the example
-        "p_swap": 0.5  # ignore this as well
+        "t_trunc": t_trunc
     }
     pmf, _ = repeater_sim(parameters)
     return pmf
 \end{lstlisting}
+
 The following figures show the CDF and PDF of the waiting time for the entanglement generation protocol, with $p_{\text{gen}} = 0.2$ and $p_{\text{gen}} = 0.5$. We can see that the waiting time is \textbf{distributed according to a geometric distribution}, as expected.
 
 In order for the algorithm to be computationally feasible, \textbf{the waiting time is truncated}, in this case at $t = 20$. The parameter $t_{trunc}$ in the algorithm should chosen to be large enough to capture the bulk of the distribution, but small enough to keep the computation time reasonable. The truncation brings to an approximation of the distribution, as the probability of waiting for more than 20 units of time is not considered: this is more visible in the top plot, where the CDF is less close to 1 at $t = 20$.
@@ -476,13 +475,30 @@ $W_{out}$ represents the weighted average of the Werner parameter of the output 
 \end{itemize}
 
 
-
 \subsection*{Numerical Examples}
 
 To plot CDF, PDF and Werner parameter of the waiting time for a 3-level entanglement swapping protocol, we can use the following code snippet:
-% todo: rework the style of the code snippet
 \begin{lstlisting}[language=Python]
+    def entanglement_swap(p_gen=0.5, p_swap=0.5, w_0=0.99, t_trunc=20):
+        parameters = {
+            # 3-level swap protocol, without distillation spanning over 9 nodes (8 segments)
+            "protocol": (0, 0, 0),
+            "p_gen": p_gen,
+            "p_swap": p_swap,
+            "t_trunc": t_trunc,
+            "w0": w_0,
+            # the memory coherence time in the unit of one attempt of elementary link generation
+            "t_coh": 400,
+        }
+        pmf, w_func = repeater_sim(parameters)
+        
+        # remove unstable Werner parameter because the the probability mass is too low
+        t = 0
+        while(pmf[t] < 1.0e-17):
+            w_func[t] = np.nan
+            t += 1
 
+        return pmf, w_func
 \end{lstlisting}
 
 The Figure \ref{fig:swap} shows the CDF and PDF of the waiting time for the entanglement swapping protocol, with $p_{gen} = 0.2$, $p_{swap} = 0.2$, and $t_{trunc} = 8000$. 
@@ -498,12 +514,170 @@ We can see that the Werner parameter, which measures the quality of the entangle
 
 This is due to the fact that the entanglement is lost over time, and the longer the waiting time, the lower the quality of the entanglement.
 % todo: but this doesn't explain why in the first few instant it is so low
-\begin{figure}[ht]
+\begin{figure}[h]
     \centering
     \includegraphics[width=1\linewidth]{images/swap_example_8000.png}
-    \caption{CDF and PDF of the waiting time for the entanglement swapping protocol, with $p_{gen} = 0.2$, $p_{swap} = 0.2$, and $t_{trunc} = 8000$.}
+    \caption{CDF and PDF of the waiting time for the entanglement swapping protocol, with $p_{gen} = 0.2$, $p_{swap} = 0.2$, $w_0 = 0.99$ and $t_{trunc} = 8000$.}
     \label{fig:swap}
 \end{figure}
+
+We can also compare the undament of the three curves using two different input Werner parameters, as showed in figure \ref{fig:swap_comparison}.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\linewidth]{images/swap_n3_comparison.png}
+    \caption{CDF and PDF of the waiting time for the entanglement swapping protocol, with $p_{gen} = 0.2$, $p_{swap} = 0.2$, $t_{trunc} = 8000$, and $w_0 = 0.99$ (left) and $w_0 = 0.9$ (right).}
+    \label{fig:swap_comparison}
+\end{figure}
+
+The waiting time distribution is not affected by the initial Werner parameter $w_0$, as expected.
+
+The Werner parameter drops in both the experiments, as already mentioned before.
+Notice that the difference between initial qualities of entanglement $w_0 = 0.99$ and $w_0 = 0.9$ impacts heavily on the undament for the Werner parameter.
+
+\newpage
+\section*{Entanglement Distillation}
+
+For entanglement distillation, the success probability $p_{dist}$ depends on the Werner parameters. 
+
+We can compute $T_{out}$ and $W_{out}$ because we iterate over all possible combinations of $t_A$ and $t_B$ and we use $W(t)$ (the average Werner parameter) to reduce the dependence on Werner parameters to the dependence on the waiting time. 
+
+The novel idea is to use \textbf{separate expressions} for the waiting time probability distribution of a successful and failed attempt. 
+
+We then express the total waiting time distribution $T_{out}$ and the Werner parameter $W_{out}$ as those of the successful attempt averaged by the occurrence probability of all possible sequences of failed attempts, where the weighted average is efficiently computed using convolution (see \ref{eq:convolution}). % todo: for the thesis, reference appendix
+
+The computation goes as follow.
+
+We define the joint distribution that one attempt succeeds or fails and takes time $t$ respectively as $P_f$ and $P_s$.
+Once these joint distributions are computed, we can compute $T_{out}$ and $W_{out}$ as convolutions of $k-1$ unsuccessful attempts and one successful one, summing over all possible numbers of attempts $k$.
+
+\subsection*{Waiting Time for Entanglement Swapping}
+
+
+\subsection*{Werner Parameter for Entanglement Swapping}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+\section*{Cutoffs}
+
+The \textit{cutoff} operation selects the input links and accepts them if the cutoff condition described in Section II-B is fulfilled. We consider only the case where \textit{cutoff} is followed by \textit{swap} or \textit{dist}, so that the two blocks together output a single entangled link.
+
+\subsection*{Waiting Time Distribution}
+We define a new binary variable $Y_{\text{cut}}$ representing whether the cutoff condition is fulfilled. The corresponding success probability is described by $p_{\text{cut}}$ in Table 1. In addition, we also define the waiting time of one cutoff attempt as $Z$, in contrast to $M$ for a swap or distillation attempt. For \textit{cutoff}, we need to distinguish the waiting time of a successful and a failed attempt. In the case of success, we always have $Z_s = \max(T_A, T_B)$, i.e., we wait until two links are produced. However, in the case of failure, the waiting time is different for different cutoff strategies. With the notation $Z_f = t_{\text{fail}}(T_A, T_B)$, we have the following: for \textit{dif-time-cutoff}, $t_{\text{fail}}(T_A, T_B) = \min(T_A, T_B) + \tau$, because there is no need to wait for the second link longer than the cutoff threshold. For \textit{max-time-cutoff}, $t_{\text{fail}}(T_A, T_B)$ is the constant $\tau$, i.e., the maximal allowed waiting time. For \textit{fidelity-cutoff}, it is $t_{\text{fail}}(T_A, T_B) = \max(T_A, T_B)$.
+
+Similar as the nested structure shown in Fig. 2, a swap or distillation attempt is now composed of several cutoff attempts.
+
+We can write its waiting time $M$ as
+
+$M=\sum_{k}\left\{\left[Y_{\text {cut }}^{(k)} \prod_{j=1}^{k-1}\left(1-Y_{\text {cut }}^{(j)}\right)\right] \cdot\left[Z_{\mathrm{s}}^{(k)}+\sum_{i=1}^{k-1}\left(Z_{\mathrm{f}}^{(i)}\right)\right]\right\}$.
+
+This expression will replace $M=\max \left(T_{\mathrm{A}}, T_{\mathrm{B}}\right)$ used in (4). For $\tau=\infty$ or $w_{\text {cut }}=0$, i.e., no cutoff, $Y_{\text {cut }}$ is always 1 . Therefore, $k=1$ is the only surviving term and the two expressions coincide.
+
+To calculate the waiting time distribution, we need three joint distributions- $P_{\mathrm{f}}^{\prime}$ for unsuccessful input link preparation because of the cutoff, $P_{\mathrm{s}, \mathrm{f}}^{\prime}$ for successful preparation but unsuccessful swap/distillation, and $P_{\mathrm{s}, \mathrm{S}}^{\prime}$ for both successful
+
+$$
+\begin{aligned}
+P_{\mathrm{f}}^{\prime}(t)= & \operatorname{Pr}\left(M=t, Y_{\mathrm{cut}}=0\right) \\
+= & \sum_{t_{\mathrm{A}}, t_{\mathrm{B}}: t_{\mathrm{fail}}\left(t_{\mathrm{A}}, t_{\mathrm{B}}\right)+t_{\mathrm{c}}=t} \operatorname{Pr}\left(T_{\mathrm{A}}=t_{\mathrm{A}}, T_{\mathrm{B}}=t_{\mathrm{B}}\right) \\
+& \cdot\left[1-p_{\mathrm{cut}}\right]\left(T_{\mathrm{A}}, T_{\mathrm{B}}\right) \\
+P_{\mathrm{s}, \mathrm{f}}^{\prime}(t)= & \operatorname{Pr}\left(M=t, Y_{\mathrm{cut}}=1, Y=0\right) \\
+= & \sum_{t_{\mathrm{A}}, t_{\mathrm{B}}: \max \left(t_{\mathrm{A}}, t_{\mathrm{B}}\right)+t_{\mathrm{c}}=t} \operatorname{Pr}\left(T_{\mathrm{A}}=t_{\mathrm{A}}, T_{\mathrm{B}}=t_{\mathrm{B}}\right) \\
+& \cdot\left[p_{\mathrm{cut}} \cdot(1-p)\right]\left(t_{\mathrm{A}}, t_{\mathrm{B}}\right) \\
+P_{\mathrm{s}, \mathrm{S}}^{\prime}(t)= & \operatorname{Pr}\left(M=t, Y_{\mathrm{cut}}=1, Y=1\right) \\
+= & \sum_{t_{\mathrm{A}}, t_{\mathrm{B}}: \max \left(t_{\mathrm{A}}, t_{\mathrm{B}}\right)+t_{\mathrm{c}}=t} \operatorname{Pr}\left(T_{\mathrm{A}}=t_{\mathrm{A}}, T_{\mathrm{B}}=t_{\mathrm{B}}\right) \\
+& \cdot\left[p_{\mathrm{cut}} \cdot p\right]\left(t_{\mathrm{A}}, t_{\mathrm{B}}\right)
+\end{aligned}
+$$
+
+The prime notation indicates that they describe the waiting time of one attempt in CUTOFF, in contrast to one attempt in swap or distillation.
+
+For one attempt in swap/distillation with time-out, we then get similarly to (7)
+
+$$
+\begin{aligned}
+& P_{\mathrm{S}}(t)=\operatorname{Pr}(M=t, Y=1)=\sum_{k}\left[\left(\begin{array}{c}
+k-1 \\
+j=1
+\end{array} P_{\mathrm{f}}^{\prime(j)}\right) * P_{\mathrm{s}, \mathrm{s}}^{\prime}\right](t) \\
+& P_{\mathrm{f}}(t)=\operatorname{Pr}(M=t, Y=0)=\sum_{k}\left[\left( P_{\mathrm{f}}^{\prime(j)}\right) * P_{\mathrm{s}, \mathrm{f}}^{\prime}\right](t)
+\end{aligned}
+$$
+
+as well as the expressions in Fourier space analogous to
+
+$$
+\begin{aligned}
+& P_{\mathrm{s}}(t)=\operatorname{Pr}(M=t, Y=1)=\mathcal{F}^{-1}\left[\frac{\mathcal{F}\left[P_{\mathrm{s}, \mathrm{s}}^{\prime}\right]}{1-\mathcal{F}\left[P_{\mathrm{f}}^{\prime}\right]}\right] \\
+& P_{\mathrm{f}}(t)=\operatorname{Pr}(M=t, Y=0)=\mathcal{F}^{-1}\left[\frac{\mathcal{F}\left[P_{\mathrm{s}, \mathrm{f}}^{\prime}\right]}{1-\mathcal{F}\left[P_{\mathrm{f}}^{\prime}\right]}\right]
+\end{aligned}
+$$
+
+The total waiting time then follows by substituting the expressions for $P_{\mathrm{f}}$ and $P_{\mathrm{S}}$ above in (7) or (11).
+
+For entanglement swap, i.e., constant success probability $p_{\text {swap, }}$, simplification can be made for this calculation. In this special case, $P_{\mathrm{s}, \mathrm{f}}^{\prime}$ and $P_{\mathrm{s}, \mathrm{S}}^{\prime}$ differ only by a constant and the same holds for $P_{\mathrm{s}}$ and $P_{\mathrm{f}}$.
+
+\section*{WERNER PARAMETER}
+For the Werner parameter, we now need three steps.
+
+We start from calculating the resulting Werner parameter of a swap or distillation for the very last preparation attempt where $Y_{\text {cut }}=Y=1$. It is denoted by $W_{\mathrm{s}}^{\prime}$ and we only need to replace $P_{\mathrm{s}}$ by $P_{\mathrm{s}, \mathrm{S}}^{\prime}$ and $p \cdot w_{\text {out }}$ by $p_{\mathrm{cut}} \cdot p \cdot w_{\text {out }}$ in (12).
+
+Next, we compute the Werner parameter $W_{\mathrm{s}}(t)$ as a function of time $t$ that includes the failed cutoff attempts, in ana$\log$ to the derivation of (13). $W_{\mathrm{s}}(t)$ is the Werner parameter that the pair of output links of cutofF will produce, given that the swap or distillation operation following is successful:
+
+$$
+W_{\mathrm{s}}(t)=\frac{\sum_{k=1}^{\infty}\left[\left(\begin{array}{c}
+k-1 \\
+* \\
+j=1
+\end{array} P_{\mathrm{f}}^{\prime}\right) *\left(P_{\mathrm{s}, \mathrm{s}}^{\prime} \cdot W_{\mathrm{s}}^{\prime}\right)\right](t)}{P_{\mathrm{s}}(t)}
+$$
+
+Finally, we consider the time consumed by failed attempts in SWAP or DIST and obtain
+
+% $$
+% W_{\text {out }}(t)=\frac{\sum_{k=1}^{\infty}\left[\binom{k-1}{\multirow{j=1}{*}{P_{\mathrm{f}}}} *\left(P_{\mathrm{S}} \cdot W_{\mathrm{s}}\right)\right](t)}{\operatorname{Pr}\left(T_{\text {out }}=t\right)}
+% $$
+
+Using the Fourier transform, the two expressions above become
+
+$$
+\begin{aligned}
+W_{\mathrm{s}}(t) & =\mathcal{F}^{-1}\left[\frac{\mathcal{F}\left[P_{\mathrm{s}, \mathrm{s}}^{\prime} \cdot W_{\mathrm{s}}^{\prime}\right]}{1-\mathcal{F}\left[P_{\mathrm{f}}^{\prime}\right]}\right] \frac{1}{P_{\mathrm{s}}} \\
+W_{\text {out }}(t) & =\mathcal{F}^{-1}\left[\frac{\mathcal{F}\left[P_{\mathrm{s}} \cdot W_{\mathrm{s}}\right]}{1-\mathcal{F}\left[P_{\mathrm{f}}\right]}\right] \frac{1}{\operatorname{Pr}\left(T_{\text {out }}=t\right)}
+\end{aligned}
+$$
+
+
+Cutoffs are conditions imposed on the pair generated through \hyperref[section:heralded_entanglement_generation]{entanglement generation}.
+They take in input an entangled pair shared between $A$ and $B$ and give in ouput either:
+\begin{itemize}
+    \item the pair itself, if the cutoff condition is satisfied,
+    \item nothing, if the condition is not satisfied.
+\end{itemize} 
+
+Thus, cutoffs preceed either entanglement swapping or distillation. Therefore, we model cutoffs together with these two protocols, by taking their described mathematical models and expanding them to include the cutoffs conditions.
+
 
 
 \end{document}

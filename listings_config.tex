@@ -1,0 +1,37 @@
+\usepackage{xcolor}
+\usepackage{listings}
+
+\definecolor{listinggray}{gray}{0.9}
+\definecolor{lbcolor}{rgb}{0.9,0.9,0.9}
+\lstloadlanguages{Python}
+
+\lstset{
+    basicstyle=\ttfamily\small,
+    language=Python,
+    %backgroundcolor=\color{lbcolor},
+    frame=single,
+    commentstyle=\color[rgb]{0.133,0.545,0.133},
+    keywordstyle=\color[rgb]{0,0,1},
+    stringstyle=\color[rgb]{0.627,0.126,0.941},
+    showtabs=false,
+    showspaces=false,
+    showstringspaces=false,
+    columns=fullflexible,
+    mathescape=true,
+    breaklines=true,
+    keepspaces,
+    upquote=true,
+    morekeywords={nonlocal,assert,yield,True,False,bytes,None,with,as}, % technically, bytes is not a keyword, but...
+    deletekeywords={file,eval},
+    moredelim=[is][\color{red}]{`}{`},%
+    moredelim=[is][\color{red}]{~red~}{~red~},%
+    moredelim=[is][\color{green}]{~green~}{~green~},%
+    moredelim=[is][\color{cyan}]{~cyan~}{~cyan~},%
+    moredelim=[is][\color{gray}]{~gray~}{~gray~},%
+    moredelim=[is][\color{blue}]{~blue~}{~blue~},%
+    moredelim=[is][\color{blue}\bfseries]{/*blue*/}{/*blue*/},
+    moredelim=[is][\color{red}\bfseries]{/*red*/}{/*red*/},
+    moredelim=[is][\color{cyan}\bfseries]{/*cyan*/}{/*cyan*/},
+    moredelim=[is][\bfseries]{/*bf*/}{/*bf*/},
+    moredelim=[is][]{/***}{***/}
+}
