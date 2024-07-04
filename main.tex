@@ -8,7 +8,7 @@
 \usepackage{braket}
 \usepackage{float}
 \usepackage[toc,page]{appendix}
-
+\usepackage{tikz}
 \input{listings_config.tex}
 
 \begin{document}
@@ -557,7 +557,11 @@ Notice that the difference between initial qualities of entanglement $w_0 = 0.99
 \newpage
 \section*{Entanglement Distillation}
 
-For entanglement distillation, the success probability $p_{dist}$ depends on the Werner parameters. 
+For entanglement distillation, the success probability $p_{dist}$ depends on the Werner parameters; in particular
+\begin{equation}
+    p_{dist} = \cfrac{1+w_A'w_B'}{2}
+\end{equation}
+where the primed notation denotes the Werner parameter with decay applied only to the link that waits in memory.
 
 We can compute $T_{out}$ and $W_{out}$ because we iterate over all possible combinations of $t_A$ and $t_B$ and we use $W(t)$ (the average Werner parameter) to reduce the dependence on Werner parameters to the dependence on the waiting time. 
 
@@ -565,14 +569,14 @@ The novel idea is to use \textbf{separate expressions} for the waiting time prob
 
 We then express the total waiting time distribution $T_{out}$ and the Werner parameter $W_{out}$ as those of the successful attempt averaged by the occurrence probability of all possible sequences of failed attempts, where the weighted average is efficiently computed using convolution (see Equation \ref{eq:convolution}). % todo: for the thesis, reference appendix
 
-\subsection*{Waiting Time for Entanglement Swapping}
+\subsection*{Waiting Time for Entanglement Distillation}
 
 To compute he waiting time distribution we consider the generation time of a successful or failed attempt separately and use the joint distribution of $M$ and $Y$. % todo: maybe ref
 
-We define the joint distribution that one attempt succeeds or fails and takes time $t$ as
+We define the joint distribution that one attempt succeeds or fails and takes time $t$ as % todo: maybe sep. in two lines the max
 \begin{align}
-    P_s(t) &:= \Pr(M = t, Y = 1) = \sum_{t_A, t_B : \max(t_A, t_B) + t_c = t} \Pr(T_A = t_A, T_B = t_B) \cdot p(t_A, t_B) \\
-    P_f(t) &:= \Pr(M = t, Y = 0) = \sum_{t_A, t_B : \max(t_A, t_B) + t_c = t} \Pr(T_A = t_A, T_B = t_B) \cdot [1 - p(t_A, t_B)]
+    P_s(t) &:= \Pr(M = t, Y = 1) = \sum_{t_A, t_B : t = \max(t_A, t_B) + t_c} \Pr(T_A = t_A, T_B = t_B) \cdot p(t_A, t_B) \\
+    P_f(t) &:= \Pr(M = t, Y = 0) = \sum_{t_A, t_B : t = \max(t_A, t_B) + t_c} \Pr(T_A = t_A, T_B = t_B) \cdot [1 - p(t_A, t_B)]
 \end{align}
 where $t_c$ is the time used for classical communication and local operation.
 
@@ -580,7 +584,7 @@ We iterate over all possible combinations of the input links' generation time $t
 
 The sum of the waiting time for all attempts can be obtained by
 \begin{align}
-    \Pr(T_{out} = t) = \sum_{k=1}^{\inf} \left[ \left( \ast_{j=1}^{k-1} P_f \right) \ast P_s \right]
+    \Pr(T_{out} = t) = \sum_{k=1}^{\infty} \left[ \left( \ast_{j=1}^{k-1} P_f \right) \ast P_s \right]
 \end{align}
 
 The sum over $k$ considers all the possible numbers of attempts, convoluting, for each case, $k-1$ unsuccessful attempts and one successful one.
@@ -596,21 +600,50 @@ The convolution here cannot be simply interpreted as a sum of two random variabl
 
 The full computation goes as follow.
 
-We define the joint distribution that one attempt succeeds or fails and takes time $t$ respectively as $P_f$ and $P_s$.
-Once these joint distributions are computed, we can compute $T_{out}$ and $W_{out}$ as convolutions of $k-1$ unsuccessful attempts and one successful one, summing over all possible numbers of attempts $k$.
+\begin{enumerate}
+    \item We compute $P_f$ and $P_s$: the joint distribution that one attempt succeeds or fails and takes time $t$.
+    \item Once these are computed, we can compute $T_{out}$ and $W_{out}$ as convolutions of $k-1$ unsuccessful attempts and one successful one, summing over all possible numbers of attempts $k$.
+\end{enumerate}
 
-\subsection*{Werner Parameter for Entanglement Swapping}
+\subsection*{Werner Parameter for Entanglement Distillation}
 
-First, we compute the average Werner parameter of the output link of one attempt, given that it succeeds and finishes at time $t$
+First, we compute the average Werner parameter of the output link of \textbf{one attempt}, given that it succeeds and finishes at time $t$
+\begin{equation}
+    W_s(t) = \frac{\sum_{\substack{t_A, t_B : \\ t = \max(t_A, t_B) + t_c}} \Pr(T_A = t_A, T_B = t_B) \cdot [p_{dist} \cdot w_{\text{out}}](t_A, t_B)}{P_s(t)}.
+\end{equation}
 
-\[
-Ws(t) = \frac{\sum_{\substack{t_A, t_B : \\ \max(t_A, t_B) + t_c = t}} \Pr(T_A = t_A, T_B = t_B) \cdot [p \cdot w_{\text{out}}](t_A, t_B)}{P_S(t)}.
-\] % todo: check if the formula is correct
+Is important to remark that $w_{out}$ is the Werner parameter of the output link if the distillation attempt was successful, and $p_{dist}$ is the success probability of the distillation protocol.
 
-Next, we take a weighted average of Ws over all possible sequences of failed attempts, followed by a single successful attempt:
+Next, we take a weighted average of $W_s$ over all possible sequences of failed attempts, followed by a single successful attempt:
+\begin{equation}
+    W_{out} = \frac{\sum_{k=1}^{\infty} \left[ \left( \ast_{i=1}^{k-1} P_f^{(j)} \right) \ast (P_s \cdot W_s) \right] (t)}{\Pr(T_{out} = t)}.
+\end{equation}
 
-where $P_S*W_S$ is the weighted average.
+\subsection*{Numerical Examples}
 
+Here, we present the execution of a protocol involving entanglement generation, distillation, and swapping.
+
+This example does not follow the standard number of nodes. As a matter of fact, we have 3 segments (not a power of two) and 4 nodes, including the end parties A and B.
+
+The protocol is visualized in \ref{fig:mixed_protocol_sketch}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\linewidth]{images/dist_example_sketch.png}
+    \caption{}
+    \label{fig:mixed_protocol_sketch} 
+\end{figure}
+
+...
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\linewidth]{images/mixed_protocol_no_cutoffs.png}
+    \caption{The secret key rate is $3.186 * 10^{-3}$.} % todo: introduce secret key rate
+    \label{fig:mixed_protocol} 
+\end{figure}
+
+...
 
 
 
@@ -729,6 +762,91 @@ They take in input an entangled pair shared between $A$ and $B$ and give in oupu
 
 Thus, cutoffs preceed either entanglement swapping or distillation. Therefore, we model cutoffs together with these two protocols, by taking their described mathematical models and expanding them to include the cutoffs conditions.
 
+
+\section*{Closed Expressions in the Fourier Domain}
+
+% todo: explain briefly the Fourier domain
+
+% talk about discrete fourier transform
+
+% todo: explain briefly the FFT and IFFT
+- explain why the ft acts on a finite sequence of numbers
+
+% todo: explain numpy fft and ifft
+- what are the fft and ifft constraints?
+
+
+\subsection*{Waiting Time Distribution for Entanglement Distillation}
+Since the discrete Fourier transform acts on a finite sequence of numbers we first truncate the probability distribution at a fixed time $L$,
+
+The Fourier transform is a linear map.
+
+Moreover it converts convolutions into element-wise multiplication
+
+As a consequence, taking the Fourier transform of both sides of Equation ?? yields
+
+\paragraph*{Full Derivation}
+
+The probability distribution of the total waiting time \( T_{\text{out}} \) for all attempts is given by:
+\begin{equation}
+    \Pr(T_{\text{out}} = t) = \sum_{k=1}^{\infty} \left[ \left(\ast_{j=1}^{k-1} P_f^{(j)} \right) \ast P_s \right](t)
+\end{equation}
+
+Applying the Fourier transform \(\mathcal{F}\) to both sides, we get:
+\begin{equation}
+    \mathcal{F}[\Pr(T_{\text{out}} = t)] = \sum_{k=1}^{\infty} \left[ \left(\prod_{j=1}^{k-1} \mathcal{F}[P_f^{(j)}] \right) \cdot \mathcal{F}[P_s] \right](t)
+\end{equation}
+
+For $k$ attempts, the productory \(\prod_{j=1}^{k-1} \mathcal{F}[P_f^{(j)}]\) represents the convolution of the failure distributions in the Fourier domain. 
+
+From the assumption made, these distributions \( P_f^{(j)} \) are identical, so:
+\begin{equation}
+    \prod_{j=1}^{k-1} \mathcal{F}[P_f^{(j)}] = \left( \mathcal{F}[P_f] \right)^{k-1}
+\end{equation}
+
+Using the identity for the sum of a geometric series \(\sum_{k=1}^{\infty} x^{k-1} = \frac{1}{1-x}\), the equation simplifies to:
+\begin{equation}
+    \mathcal{F}[\Pr(T_{\text{out}} = t)] = \sum_{k=1}^{\infty} \left( \left( \mathcal{F}[P_f] \right)^{k-1} \cdot \mathcal{F}[P_s] \right)
+\end{equation}
+
+Recognizing the geometric series in the sum, we obtain:
+\begin{equation}
+\sum_{k=1}^{\infty} \left( \mathcal{F}[P_f] \right)^{k-1} = \frac{1}{1 - \mathcal{F}[P_f]}
+\end{equation}
+
+% Final simplified form
+Thus, incorporating the success term \(\mathcal{F}[P_s]\), we get:
+\begin{equation}
+\mathcal{F}[\Pr(T_{\text{out}} = t)] = \frac{\mathcal{F}[P_s]}{1 - \mathcal{F}[P_f]}
+\end{equation}
+
+% Applying the inverse Fourier transform to return to the time domain
+Finally, applying the inverse Fourier transform \(\mathcal{F}^{-1}\), we obtain:
+\begin{equation}
+\Pr(T_{\text{out}} = t) = \mathcal{F}^{-1} \left[ \frac{\mathcal{F}[P_s]}{1 - \mathcal{F}[P_f]} \right](t)
+\end{equation}
+
+\subsection*{Werner Parameter for Entanglement Distillation}
+
+The transformation of Equation ?? to Fourier space involves the same concepts and yields
+% todo: include it
+
+Again, the convolution has become a productory of identical copies of the same random variable; the resulting term, exponentiated to $k-1$, is then transformed through geometric series, yielding the final expression.
+
+\subsection*{Entanglement Swapping in the Fourier Domain}
+
+Equation ?? and ?? can also be moved to the Fourier space as follows.
+
+The derivation is simple: both expressions can be written in Fourier space by substituting $P_s = p_{swap} \cdot m(t)$ and $Pf = (1 - pswap) \cdot m(t)$ in ?? and ??.
+
+As a result, the waiting time distribution in the Fourier space is:
+% include it
+
+and the Werner parameter is 
+% include it
+
+\subsection*{Cutoffs in the Fourier Domain}
+% derivation
 
 
 \end{document}
