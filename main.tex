@@ -23,172 +23,6 @@
 
 \maketitle
 
-\chapter*{Mathematical Background}
-
-\section*{Convolution}
-
-Convolution is a fundamental mathematical operation used to combine two functions to produce a third function, which represents how the shape of one function is modified by the other. 
-
-For two discrete functions \(a\) and \(b\), the convolution \(a * b\) is defined as:
-
-\begin{equation}
-    (a * b)(z) = \sum_{x=0}^{z} a(x) \cdot b(z - x)
-\end{equation}
-
-\paragraph*{Convolution of two Probability Distributions}
-In the context of probability distributions, if \(X\) and \(Y\) are independent random variables with probability distribution functions \(p_X\) and \(p_Y\), their sum \(Z = X + Y\) has a probability distribution function \(p_Z\) given by the convolution of \(p_X\) and \(p_Y\):
-\begin{equation}\label{eq:convolution}
-    p_Z(z) = \sum_{x=0}^{z} p_X(x) \cdot p_Y(z - x)
-\end{equation}
-
-Thus, convolution is used to determine the probability distribution of the sum of independent random variables by combining their individual probability distributions.
-
-\paragraph*{Example} 
-
-Consider this simple example. Let $X$ and $Y$ discrete independent random variables. 
-
-The probability distribution $\Pr(Z = z)$ of the random variable $Z = X + Y$ is computed as follows:
-\begin{equation*}
-    \begin{array}{|c|c|c|c|c|c|c|}
-        \hline
-        x & \Pr(X = x) & y & \Pr(Y = y) & z & \Pr(Z = z) & \text{Derivation of }\Pr(Z = z)\\
-        \hline
-        0 & 0.2 & 0 & 0.3 & 0 & 0.06 & 0.2 \cdot 0.3 \\
-        \hline
-        1 & 0.5 & 1 & 0.4 & 1 & 0.23 & 0.2 \cdot 0.4 + 0.5 \cdot 0.3 \\
-        \hline
-        2 & 0.3 & 2 & 0.3 & 2 & 0.35 & 0.2 \cdot 0.3 + 0.5 \cdot 0.4 + 0.3 \cdot 0.3 \\
-        \hline
-         &  &  &  & 3 & 0.27 & 0.5 \cdot 0.3 + 0.3 \cdot 0.4 \\
-        \hline
-         &  &  &  & 4 & 0.09 & 0.3 \cdot 0.3 \\
-        \hline
-    \end{array}
-\end{equation*}
-
-Note that $\Pr(Z = z)$ has five elements (all the possible sums), and it is valid as its probabilities sum to 1.
-
-\paragraph*{Associativity}
-\begin{samepage}
-    The convolution operator \( * \) is associative, meaning that for any three functions \(a\), \(b\), and \(c\):
-    \begin{equation}\label{eq:convolution_associativity} 
-        (a * b) * c = a * (b * c)
-    \end{equation}        
-\end{samepage}
-
-\section*{Random Variables}
-
-In this section, we fix notation on random variables and operations on them. 
-
-Most random variables in the context of quantum repeaters
-\begin{itemize}
-    \item are discrete,
-    \item have as domain a subset of nonnegative integers.
-\end{itemize}
-
-\paragraph*{PDF}\label{paragraph:pdf}
-Let $X$ be such a random variable, then its probability distribution function is a map
-\begin{equation}
-    p_X : x \mapsto \Pr(X = x)
-\end{equation} 
-which describes the probability that its outcome will be $x \in \{0, 1, 2, \ldots \}$.
-
-\paragraph*{CDF}\label{paragraph:cdf}
-Equivalently, $X$ is described by its cumulative distribution function
-\begin{equation}
-    \Pr(X \leq x) = \sum_{y=0}^{x} \Pr(X = y),
-\end{equation}
-
-which is transformed to the probability distribution function as 
-\begin{equation}
-    \Pr(X = x) = \Pr(X \leq x) - \Pr(X \leq x - 1).
-\end{equation}
-
-\paragraph*{Independent Random Variables}\label{paragraph:independent_random_variables}
-Two random variables $X$ and $Y$ are independent if 
-\begin{equation}
-    \Pr(X = x \text{ and } Y = y) = \Pr(X = x) \cdot \Pr(Y = y)
-\end{equation}
-for all $x$ and $y$ in the domain.
-
-\paragraph*{Copies of a Random Variable}\label{paragraph:copies_of_a_random_variable} By a \textit{copy} of $X$, we mean a fresh random variable which is independent from $X$ and identically distributed (i.i.d.).
-We will denote a copy by a superscript in parentheses. For example, $X^{(1)}$, $X^{(142)}$ and $X^{(A)}$ are all copies of $X$.
-
-\paragraph*{Expected Value}
-The mean of $X$ is denoted by 
-\begin{equation}\label{eq:expectation}
-    E[X] = \sum_{x=0}^{\infty} \Pr(X = x) \cdot x
-\end{equation}
-
-and can equivalently be computed as 
-\begin{equation}
-    E[X] = \sum_{x=1}^{\infty} \Pr(X \geq x).
-\end{equation}
-
-\paragraph*{Function of Random Variables}\label{paragraph:function_of_random_variables}
-If $f$ is a function which takes two nonnegative integers as input, then the random variable $f(X, Y)$ has probability distribution function defined as
-
-\begin{equation}
-    \Pr(f(X, Y) = z) := \sum_{\substack{x=0, y=0 \\ f(x,y)=z}}^{\infty} \Pr(X = x \text{ and } Y = y).
-\end{equation}
-
-\paragraph*{Sum of Random Variables}\label{paragraph:sum_of_random_variables}
-An example of such a function is addition. 
-
-Define $Z := X+Y$ where $X$ and $Y$ are independent, then the probability distribution $p_Z$ of $Z$ is given by 
-\begin{equation}
-    p_Z(z) = \Pr(Z = z) = \sum_{\substack{x=0, y=0 \\ x+y=z}}^{\infty} \Pr(X = x \text{ and } Y = y).
-\end{equation}
-
-But since $y = z - x$, this is equivalent to
-\begin{align}
-    p_Z(z) = \Pr(Z = z) &= \sum_{\substack{x=0}}^{z} \Pr(X = x \text{ and } Y = z - x) \\ 
-                        &= \sum_{\substack{x=0}}^{z} \Pr(X = x) \cdot Pr(Y = z - x) \\
-                        &= \sum_{x=0}^{z} p_X(x) \cdot p_Y (z - x)
-\end{align}
-which is the convolution of the distributions $p_X$ and $p_Y$ (see \ref{eq:convolution}), denoted as $p_Z = p_X * p_Y$.
-
-Notice that, since the convolution operator $*$ is associative (see \ref{eq:convolution_associativity}), writing $a * b * c$ is well-defined, for functions $a$, $b$, $c$, from the nonnegative integers to the real numbers.
-
-In general, \textbf{the probability distribution of sums of independent random variables equals the convolutions of their individual probability distribution functions}.
-
-\section*{Geometric Distribution}\label{section:geometric_distribution}
-
-The geometric distribution is a discrete probability distribution that models the number of trials needed to achieve the first success in a sequence of independent Bernoulli trials, each with the same success probability $p$.
-
-\subsection*{Probability Distribution Function (PDF)}\label{subsection:geometric_pdf}
-
-The probability distribution function (PDF) of a geometric distribution gives the probability that the first success occurs on the $t$-th trial. It is defined as:
-\begin{equation}
-    \Pr(T = t) = p \cdot (1 - p)^{t-1} \quad \text{for} \quad t \in \{1, 2, 3, \ldots \},
-\end{equation}
-where:
-\begin{itemize}
-    \item $T$ is the random variable representing the trial number of the first success,
-    \item $p$ is the probability of success on each trial,
-    \item $(1 - p)$ is the probability of failure on each trial.
-\end{itemize}
-
-This formula expresses that the first $t-1$ trials must be failures, each occurring with probability $(1-p)$, and the $t$-th trial must be a success (with probability $p$).
-
-\subsection*{Cumulative Distribution Function (CDF)}\label{subsection:geometric_cdf}
-
-The cumulative distribution function (CDF) of a geometric distribution gives the probability that the first success occurs on or before the $t$-th trial. It is defined as:
-\begin{equation}
-    \Pr(T \leq t) = 1 - (1 - p)^t.
-\end{equation}
-
-\paragraph*{Derivation of the CDF}
-The CDF of a geometric distribution can be derived from its PDF as follows:
-\begin{align*}
-    \Pr(T \leq t) &= 1 - \Pr(T > t) \\
-    &= 1 - \sum_{k=t+1} \Pr(T = k) \\
-    &= 1 - \left\{p (1 - p)^t + p (1 - p)^{t+1} + p (1 - p)^{t+2} + \ldots\right\} \\
-    &= 1 - p (1 - p)^t \sum_{k=0} (1 - p)^k \\
-    &= 1 - (1 - p)^t \sum_{k=0} p (1 - p)^k \\
-    &= 1 - (1 - p)^t.
-\end{align*} % tocheck
-
 \chapter*{Mathematical Model for \\ Waiting Time and Fidelity}
 
 We derive expressions for the waiting time and fidelity of the first generated end-to-end link in the repeater chain protocol. 
@@ -224,7 +58,7 @@ In modeling the random variable $T_n$, which represents the waiting time in a $2
 
 The base case \textbf{$T_0$ is the waiting time for the generation of elementary entanglement}.
 
-\begin{figure}[h]
+\begin{figure}[ht]
     \centering
     \includegraphics[width=0.2\linewidth]{images/gen.png}
     \caption{For two segments, $T_0$ represents the waiting time for the generation of a single link between two nodes without any intermediate repeater nodes.}
@@ -298,9 +132,9 @@ We now define our inductive step assuming that we have found an expression for $
 
 In order to perform the entanglement swap to produce a single $(2^n+1)$-hop link, a node needs to wait for the production of two $(2^n)$-hop links, one on each side. 
 
-\begin{figure}[h]
+\begin{figure}[ht]
     \centering
-    \includegraphics[width=0.2\linewidth]{images/dist.png}
+    \includegraphics[width=0.8\linewidth]{images/dist.png}
     \caption{A link that spans $2^n$ segments is produced in a nested fashion, where at each nesting level two links are produced and subsequently swapped. \cite{}} % todo: add citation
     \label{fig:dist}
 \end{figure}
@@ -375,7 +209,7 @@ where, from Equation \ref{eq:pdf_waiting_time_pair}
 
 \subsection*{Werner Parameter for Entanglement Swapping}
 
-Considering two entangled pairs, respectively with werner parameters $w_A$ and $w_B$, the output werner parameter $w_{out}$, if we do not consider decoherence, will be % todo: for the thesis, cref werner parameter
+Considering two entangled pairs, respectively with Werner parameters $w_A$ and $w_B$, the output Werner parameter $w_{out}$, if we do not consider decoherence, will be % todo: for the thesis, cref werner parameter
 \begin{equation}
     w_{out} = w_A \cdot w_B .
 \end{equation}
@@ -533,7 +367,7 @@ We can see that the Werner parameter, which measures the quality of the entangle
 
 This is due to the fact that the entanglement is lost over time, and the longer the waiting time, the lower the quality of the entanglement.
 % todo: but this doesn't explain why in the first few instant it is so low
-\begin{figure}[h]
+\begin{figure}[ht]
     \centering
     \includegraphics[width=1\linewidth]{images/swap_example_8000.png}
     \caption{CDF and PDF of the waiting time for the entanglement swapping protocol, with $p_{gen} = 0.2$, $p_{swap} = 0.2$, $w_0 = 0.99$ and $t_{trunc} = 8000$.}
@@ -557,49 +391,45 @@ Notice that the difference between initial qualities of entanglement $w_0 = 0.99
 \newpage
 \section*{Entanglement Distillation}
 
-For entanglement distillation, the success probability $p_{dist}$ depends on the Werner parameters; in particular
+Entanglement distillation takes in input two low-quality entangled pairs and produces a single high-quality one.
+% todo: add image
+For entanglement distillation, the success probability $p_{dist}$ depends on the Werner parameters of the input links $A$ and $B$; in particular
 \begin{equation}
     p_{dist} = \cfrac{1+w_A'w_B'}{2}
 \end{equation}
 where the primed notation denotes the Werner parameter with decay applied only to the link that waits in memory.
 
-We can compute $T_{out}$ and $W_{out}$ because we iterate over all possible combinations of $t_A$ and $t_B$ and we use $W(t)$ (the average Werner parameter) to reduce the dependence on Werner parameters to the dependence on the waiting time. 
+To compute $T_{out}$ and $W_{out}$ for this protocol unit we \textbf{separate the expressions} for the waiting time probability distribution of a successful and failed attempt, respectively $P_s(t)$ and $P_f(t)$.
 
-The novel idea is to use \textbf{separate expressions} for the waiting time probability distribution of a successful and failed attempt. 
+These are computed by iterating over all possible combinations of the input links' generation time $t_A$, $t_B$ that lead to a waiting time $t$ for this attempt.
 
 We then express the total waiting time distribution $T_{out}$ and the Werner parameter $W_{out}$ as those of the successful attempt averaged by the occurrence probability of all possible sequences of failed attempts, where the weighted average is efficiently computed using convolution (see Equation \ref{eq:convolution}). % todo: for the thesis, reference appendix
 
 \subsection*{Waiting Time for Entanglement Distillation}
 
-To compute he waiting time distribution we consider the generation time of a successful or failed attempt separately and use the joint distribution of $M$ and $Y$. % todo: maybe ref
+To compute he waiting time distribution we consider the generation time of a successful or failed attempt separately and use the joint distribution of $M$ and $Y$, where again $M$ is the waiting time and $Y$ is a binary variable that indicates the success of the attempt. % todo: maybe ref
 
-We define the joint distribution that one attempt succeeds or fails and takes time $t$ as % todo: maybe sep. in two lines the max
+We define the joint distribution that \textbf{one attempt} succeeds or fails and takes time $t$ as % todo: maybe sep. in two lines the max
 \begin{align}
     P_s(t) &:= \Pr(M = t, Y = 1) = \sum_{t_A, t_B : t = \max(t_A, t_B) + t_c} \Pr(T_A = t_A, T_B = t_B) \cdot p(t_A, t_B) \\
     P_f(t) &:= \Pr(M = t, Y = 0) = \sum_{t_A, t_B : t = \max(t_A, t_B) + t_c} \Pr(T_A = t_A, T_B = t_B) \cdot [1 - p(t_A, t_B)]
 \end{align}
-where $t_c$ is the time used for classical communication and local operation.
+where $t_c$ is the time used for classical communication and local operation. Here, we iterated over all possible combinations of the input links' generation time $t_A$, $t_B$ that leads to a waiting time $t$ for this attempt.
 
-We iterate over all possible combinations of the input links' generation time $t_A$, $t_B$ that leads to a waiting time $t$ for this attempt.
-
-The sum of the waiting time for all attempts can be obtained by
+The sum of the waiting time for \textbf{all attempts} can be obtained by
 \begin{align}
     \Pr(T_{out} = t) = \sum_{k=1}^{\infty} \left[ \left( \ast_{j=1}^{k-1} P_f \right) \ast P_s \right]
 \end{align}
+where the sum over $k$ considers all the possible numbers of attempts, convoluting, for each case, $k-1$ unsuccessful attempts and one successful one.
 
-The sum over $k$ considers all the possible numbers of attempts, convoluting, for each case, $k-1$ unsuccessful attempts and one successful one.
-
-Neither $P_f$ or $P_s$ characterizes a random variable since they are joint distributions including $Y$. 
-That is to say, $Ps$ and $Pf$ do not sum up to 1.
-Instead, we have
+Neither $P_f$ or $P_s$ characterizes a random variable since they are joint distributions including $Y$, that is to say, $Ps$ and $Pf$ do not sum up to 1. Instead, we have
 \begin{equation}
-    \sum_t P_s(t) + \sum_t P_f(t) = 1
+    \sum_t P_s(t) + \sum_t P_f(t) = 1 .
 \end{equation}
 
 The convolution here cannot be simply interpreted as a sum of two random variables. Instead, it is the summed waiting time conditioned on the success/failure of each attempt.
 
-The full computation goes as follow.
-
+To summarize, the full computation goes as follows:
 \begin{enumerate}
     \item We compute $P_f$ and $P_s$: the joint distribution that one attempt succeeds or fails and takes time $t$.
     \item Once these are computed, we can compute $T_{out}$ and $W_{out}$ as convolutions of $k-1$ unsuccessful attempts and one successful one, summing over all possible numbers of attempts $k$.
@@ -607,17 +437,22 @@ The full computation goes as follow.
 
 \subsection*{Werner Parameter for Entanglement Distillation}
 
+Also for the Werner parameter, we use the separate expressions for the successful and failed attempts. 
+
+Moreover we use $W(t)$, the average Werner parameter, to reduce the dependence on Werner parameters to the dependence on the waiting time.
+
 First, we compute the average Werner parameter of the output link of \textbf{one attempt}, given that it succeeds and finishes at time $t$
 \begin{equation}
     W_s(t) = \frac{\sum_{\substack{t_A, t_B : \\ t = \max(t_A, t_B) + t_c}} \Pr(T_A = t_A, T_B = t_B) \cdot [p_{dist} \cdot w_{\text{out}}](t_A, t_B)}{P_s(t)}.
 \end{equation}
-
-Is important to remark that $w_{out}$ is the Werner parameter of the output link if the distillation attempt was successful, and $p_{dist}$ is the success probability of the distillation protocol.
+where $w_{out}$ is the Werner parameter of the output link if the distillation attempt \textbf{was successful}.
 
 Next, we take a weighted average of $W_s$ over all possible sequences of failed attempts, followed by a single successful attempt:
 \begin{equation}
     W_{out} = \frac{\sum_{k=1}^{\infty} \left[ \left( \ast_{i=1}^{k-1} P_f^{(j)} \right) \ast (P_s \cdot W_s) \right] (t)}{\Pr(T_{out} = t)}.
 \end{equation}
+
+This give us the Werner parameter of the output link.
 
 \subsection*{Numerical Examples}
 
@@ -625,43 +460,43 @@ Here, we present the execution of a protocol involving entanglement generation, 
 
 This example does not follow the standard number of nodes. As a matter of fact, we have 3 segments (not a power of two) and 4 nodes, including the end parties A and B.
 
-The protocol is visualized in \ref{fig:mixed_protocol_sketch}.
+The protocol is visualized in Figure \ref{fig:mixed_protocol_sketch}, and results from the different steps are shown in Figure \ref{fig:mixed_protocol}.
 
-\begin{figure}[h]
+\begin{figure}[ht]
     \centering
     \includegraphics[width=0.8\linewidth]{images/dist_example_sketch.png}
-    \caption{}
+    \caption{We show a mixed protocol, with the number of qubits and segments not being a power of two. Notice that it is only for illustrative purposes, and the protocol is not optimal. We have a four nodes repeater chain with three segments. The end nodes $A$ and $D$ have 3 qubits, while the intermediate nodes $B$ and $C$ have 6 qubits.}
     \label{fig:mixed_protocol_sketch} 
 \end{figure}
 
-...
-
-\begin{figure}[h]
+\begin{figure}[ht]
     \centering
     \includegraphics[width=0.8\linewidth]{images/mixed_protocol_no_cutoffs.png}
-    \caption{The secret key rate is $3.186 * 10^{-3}$.} % todo: introduce secret key rate
+    \caption{These plots show the waiting time distribution and the Werner parameter for the entanglement generation, distillation, and swapping protocol. (a) after the generation of the elementary links and the distillation of 3 low-quality links $A-B$ into a high-quality one. (b) Consider $i \in {1,2,3}$. Three pair of links $(B_i-C_i, C_i-D_i)$, are swapped into the links $B_i-D_i$. (c) The three low-quality links $B_i-D_i$ are distilled into a single high-quality link $B-D$. (d) The end-link $A-D$ is produced starting from $A-B$ and $B-D$. The secret key rate at the end of the protocol is $3.1 * 10^{-3}$.} % todo: introduce secret key rate
     \label{fig:mixed_protocol} 
 \end{figure}
 
-...
+We can get some general insights from the plots:
+\begin{itemize}
+    \item As the protocol units are applied, the probability that the link is produced at time $t$ shifts to a larger $t$, indicating longer waiting time.
+    \item When protocol units different from distillation are applied, the Werner parameter decreases for most times $t$.
+\end{itemize}
 
+One important aspect to remark is that the Werner parameter curves are truncated if the corresponding PMF value goes under a certain threshold. This is because for these values of the PMF, the corresponding Werner parameter is unstable. % todo: define unstable
 
+It is also interesting to notice that not always the distillation brings to higher values for the Werner parameter, like in this case.
 
+In particular, the outcome of the Werner parameter depends on the quality of the input links, the times of their generation, and the time of decoherence $t_{coh}$. 
+In the Figure \ref{fig:mixed_protocol_dist_comparison} we only consider the steps before and after distillation, presented as the second and third row in Figure \ref{fig:mixed_protocol}. We fix all the parameters except for the time of decoherence, that takes values $t_{coh} = {400, 1600}$.
 
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\linewidth]{images/mixed_protocol_dist_comp.png}
+    \caption{}
+    \label{fig:mixed_protocol_dist_comparison} 
+\end{figure}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+We notice that in one case the produced link has higher Werner parameter far all $t$, while in the other this is not true.
 
 \newpage
 \section*{Cutoffs}
@@ -848,5 +683,172 @@ and the Werner parameter is
 \subsection*{Cutoffs in the Fourier Domain}
 % derivation
 
+\appendix
+
+\chapter*{Mathematical Background}
+
+\section*{Convolution}
+
+Convolution is a fundamental mathematical operation used to combine two functions to produce a third function, which represents how the shape of one function is modified by the other. 
+
+For two discrete functions \(a\) and \(b\), the convolution \(a * b\) is defined as:
+
+\begin{equation}
+    (a * b)(z) = \sum_{x=0}^{z} a(x) \cdot b(z - x)
+\end{equation}
+
+\paragraph*{Convolution of two Probability Distributions}
+In the context of probability distributions, if \(X\) and \(Y\) are independent random variables with probability distribution functions \(p_X\) and \(p_Y\), their sum \(Z = X + Y\) has a probability distribution function \(p_Z\) given by the convolution of \(p_X\) and \(p_Y\):
+\begin{equation}\label{eq:convolution}
+    p_Z(z) = \sum_{x=0}^{z} p_X(x) \cdot p_Y(z - x)
+\end{equation}
+
+Thus, convolution is used to determine the probability distribution of the sum of independent random variables by combining their individual probability distributions.
+
+\paragraph*{Example} 
+
+Consider this simple example. Let $X$ and $Y$ discrete independent random variables. 
+
+The probability distribution $\Pr(Z = z)$ of the random variable $Z = X + Y$ is computed as follows:
+\begin{equation*}
+    \begin{array}{|c|c|c|c|c|c|c|}
+        \hline
+        x & \Pr(X = x) & y & \Pr(Y = y) & z & \Pr(Z = z) & \text{Derivation of }\Pr(Z = z)\\
+        \hline
+        0 & 0.2 & 0 & 0.3 & 0 & 0.06 & 0.2 \cdot 0.3 \\
+        \hline
+        1 & 0.5 & 1 & 0.4 & 1 & 0.23 & 0.2 \cdot 0.4 + 0.5 \cdot 0.3 \\
+        \hline
+        2 & 0.3 & 2 & 0.3 & 2 & 0.35 & 0.2 \cdot 0.3 + 0.5 \cdot 0.4 + 0.3 \cdot 0.3 \\
+        \hline
+         &  &  &  & 3 & 0.27 & 0.5 \cdot 0.3 + 0.3 \cdot 0.4 \\
+        \hline
+         &  &  &  & 4 & 0.09 & 0.3 \cdot 0.3 \\
+        \hline
+    \end{array}
+\end{equation*}
+
+Note that $\Pr(Z = z)$ has five elements (all the possible sums), and it is valid as its probabilities sum to 1.
+
+\paragraph*{Associativity}
+\begin{samepage}
+    The convolution operator \( * \) is associative, meaning that for any three functions \(a\), \(b\), and \(c\):
+    \begin{equation}\label{eq:convolution_associativity} 
+        (a * b) * c = a * (b * c)
+    \end{equation}        
+\end{samepage}
+
+\section*{Random Variables}
+
+In this section, we fix notation on random variables and operations on them. 
+
+Most random variables in the context of quantum repeaters
+\begin{itemize}
+    \item are discrete,
+    \item have as domain a subset of nonnegative integers.
+\end{itemize}
+
+\paragraph*{PDF}\label{paragraph:pdf}
+Let $X$ be such a random variable, then its probability distribution function is a map
+\begin{equation}
+    p_X : x \mapsto \Pr(X = x)
+\end{equation} 
+which describes the probability that its outcome will be $x \in \{0, 1, 2, \ldots \}$.
+
+\paragraph*{CDF}\label{paragraph:cdf}
+Equivalently, $X$ is described by its cumulative distribution function
+\begin{equation}
+    \Pr(X \leq x) = \sum_{y=0}^{x} \Pr(X = y),
+\end{equation}
+
+which is transformed to the probability distribution function as 
+\begin{equation}
+    \Pr(X = x) = \Pr(X \leq x) - \Pr(X \leq x - 1).
+\end{equation}
+
+\paragraph*{Independent Random Variables}\label{paragraph:independent_random_variables}
+Two random variables $X$ and $Y$ are independent if 
+\begin{equation}
+    \Pr(X = x \text{ and } Y = y) = \Pr(X = x) \cdot \Pr(Y = y)
+\end{equation}
+for all $x$ and $y$ in the domain.
+
+\paragraph*{Copies of a Random Variable}\label{paragraph:copies_of_a_random_variable} By a \textit{copy} of $X$, we mean a fresh random variable which is independent from $X$ and identically distributed (i.i.d.).
+We will denote a copy by a superscript in parentheses. For example, $X^{(1)}$, $X^{(142)}$ and $X^{(A)}$ are all copies of $X$.
+
+\paragraph*{Expected Value}
+The mean of $X$ is denoted by 
+\begin{equation}\label{eq:expectation}
+    E[X] = \sum_{x=0}^{\infty} \Pr(X = x) \cdot x
+\end{equation}
+
+and can equivalently be computed as 
+\begin{equation}
+    E[X] = \sum_{x=1}^{\infty} \Pr(X \geq x).
+\end{equation}
+
+\paragraph*{Function of Random Variables}\label{paragraph:function_of_random_variables}
+If $f$ is a function which takes two nonnegative integers as input, then the random variable $f(X, Y)$ has probability distribution function defined as
+
+\begin{equation}
+    \Pr(f(X, Y) = z) := \sum_{\substack{x=0, y=0 \\ f(x,y)=z}}^{\infty} \Pr(X = x \text{ and } Y = y).
+\end{equation}
+
+\paragraph*{Sum of Random Variables}\label{paragraph:sum_of_random_variables}
+An example of such a function is addition. 
+
+Define $Z := X+Y$ where $X$ and $Y$ are independent, then the probability distribution $p_Z$ of $Z$ is given by 
+\begin{equation}
+    p_Z(z) = \Pr(Z = z) = \sum_{\substack{x=0, y=0 \\ x+y=z}}^{\infty} \Pr(X = x \text{ and } Y = y).
+\end{equation}
+
+But since $y = z - x$, this is equivalent to
+\begin{align}
+    p_Z(z) = \Pr(Z = z) &= \sum_{\substack{x=0}}^{z} \Pr(X = x \text{ and } Y = z - x) \\ 
+                        &= \sum_{\substack{x=0}}^{z} \Pr(X = x) \cdot Pr(Y = z - x) \\
+                        &= \sum_{x=0}^{z} p_X(x) \cdot p_Y (z - x)
+\end{align}
+which is the convolution of the distributions $p_X$ and $p_Y$ (see \ref{eq:convolution}), denoted as $p_Z = p_X * p_Y$.
+
+Notice that, since the convolution operator $*$ is associative (see \ref{eq:convolution_associativity}), writing $a * b * c$ is well-defined, for functions $a$, $b$, $c$, from the nonnegative integers to the real numbers.
+
+In general, \textbf{the probability distribution of sums of independent random variables equals the convolutions of their individual probability distribution functions}.
+
+\section*{Geometric Distribution}\label{section:geometric_distribution}
+
+The geometric distribution is a discrete probability distribution that models the number of trials needed to achieve the first success in a sequence of independent Bernoulli trials, each with the same success probability $p$.
+
+\subsection*{Probability Distribution Function (PDF)}\label{subsection:geometric_pdf}
+
+The probability distribution function (PDF) of a geometric distribution gives the probability that the first success occurs on the $t$-th trial. It is defined as:
+\begin{equation}
+    \Pr(T = t) = p \cdot (1 - p)^{t-1} \quad \text{for} \quad t \in \{1, 2, 3, \ldots \},
+\end{equation}
+where:
+\begin{itemize}
+    \item $T$ is the random variable representing the trial number of the first success,
+    \item $p$ is the probability of success on each trial,
+    \item $(1 - p)$ is the probability of failure on each trial.
+\end{itemize}
+
+This formula expresses that the first $t-1$ trials must be failures, each occurring with probability $(1-p)$, and the $t$-th trial must be a success (with probability $p$).
+
+\subsection*{Cumulative Distribution Function (CDF)}\label{subsection:geometric_cdf}
+
+The cumulative distribution function (CDF) of a geometric distribution gives the probability that the first success occurs on or before the $t$-th trial. It is defined as:
+\begin{equation}
+    \Pr(T \leq t) = 1 - (1 - p)^t.
+\end{equation}
+
+\paragraph*{Derivation of the CDF}
+The CDF of a geometric distribution can be derived from its PDF as follows:
+\begin{align*}
+    \Pr(T \leq t) &= 1 - \Pr(T > t) \\
+    &= 1 - \sum_{k=t+1} \Pr(T = k) \\
+    &= 1 - \left\{p (1 - p)^t + p (1 - p)^{t+1} + p (1 - p)^{t+2} + \ldots\right\} \\
+    &= 1 - p (1 - p)^t \sum_{k=0} (1 - p)^k \\
+    &= 1 - (1 - p)^t \sum_{k=0} p (1 - p)^k \\
+    &= 1 - (1 - p)^t.
+\end{align*} % tocheck
 
 \end{document}
