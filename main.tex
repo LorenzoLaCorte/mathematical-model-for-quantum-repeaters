@@ -199,7 +199,7 @@ The probability distribution of the waiting time $T_{n+1}$
 \end{align}
 
 Plugging in the expressions for $\Pr(K_n = k)$ (Equation \ref{eq:pdf_swap_steps}) and recalling that the sum of $k$ copies of $M_n$ can be expressed as a \hyperref[eq:convolution]{convolution}, we get
-\begin{equation}\label{eq:pdf_waiting_time_swap}
+\begin{equation}\label{eq:waiting_time_swap}
     \Pr(T_{n+1} = t) = \sum_{k=1}^{\infty} p_{\text{swap}}(1 - p_{\text{swap}})^{k-1} \left( \ast_{j=1}^{k} m \right)
 \end{equation}
 where, from Equation \ref{eq:pdf_waiting_time_pair}
@@ -289,7 +289,7 @@ In order to find how the Werner parameter on level $n+1$ is expressed as a funct
     \item $v_{j}$ to the output link's Werner parameter if the swap were successful. 
 \end{itemize}
 
-From previus results, we found that the total waiting time is given by $\sum_{j=1}^{k} m_{j}$, the sum of the duration of the production of the lost pairs (see Equation \ref{eq:pdf_waiting_time_swap}). % todo: check is the sum and not the convolution 
+From previus results, we found that the total waiting time is given by $\sum_{j=1}^{k} m_{j}$, the sum of the duration of the production of the lost pairs (see Equation \ref{eq:waiting_time_swap}). % todo: check is the sum and not the convolution 
 
 Note, however, that the Werner parameter of the $2^{n+1}$ hop link \textbf{is only influenced by the links that the successful entanglement swap acted upon}. Since the entanglement swaps are performed until the first successful one, the output link is the last produced link and therefore its Werner parameter equals $v_{k}$. 
 
@@ -314,11 +314,10 @@ Let $W_{s}(t)$ be the \textbf{average Werner parameter} of the output link of \t
 \end{equation}
 
 By taking Eq. \ref{eq:joint_random_variable} and replacing the iteration over all pair of possible input Werner parameters for each $k$ by convolution we get
-\begin{equation}
-    W_{out} = \sum_{k=1}^{\infty} p_{swap} (1 - p_{swap})^{k-1} \left[ \left( \ast_{j=1}^{k-1} m \right) \ast \left( m \cdot W_{s} \right) \right].
+\begin{equation}\label{werner_parameter_swap}
+    W_{out} = \sum_{k=1}^{\infty} p_{swap} (1 - p_{swap})^{k-1} \left[ \left( \ast_{j=1}^{k-1} m \right) \ast \left( m \cdot W_{s} \right) \right]
 \end{equation}
-
-Where $m$ is defined in Eq. \ref{eq:pdf_waiting_time_pair_convolution}.
+where $m$ is defined in Eq. \ref{eq:pdf_waiting_time_pair_convolution}.
 
 $W_{out}$ represents the weighted average of the Werner parameter of the output link, over all possible sequences of failed attempts, followed by a successful one:
 \begin{itemize}
@@ -417,7 +416,7 @@ We define the joint distribution that \textbf{one attempt} succeeds or fails and
 where $t_c$ is the time used for classical communication and local operation. Here, we iterated over all possible combinations of the input links' generation time $t_A$, $t_B$ that leads to a waiting time $t$ for this attempt.
 
 The sum of the waiting time for \textbf{all attempts} can be obtained by
-\begin{align}
+\begin{align}\label{eq:waiting_time_distillation}
     \Pr(T_{out} = t) = \sum_{k=1}^{\infty} \left[ \left( \ast_{j=1}^{k-1} P_f \right) \ast P_s \right]
 \end{align}
 where the sum over $k$ considers all the possible numbers of attempts, convoluting, for each case, $k-1$ unsuccessful attempts and one successful one.
@@ -448,7 +447,7 @@ First, we compute the average Werner parameter of the output link of \textbf{one
 where $w_{out}$ is the Werner parameter of the output link if the distillation attempt \textbf{was successful}.
 
 Next, we take a weighted average of $W_s$ over all possible sequences of failed attempts, followed by a single successful attempt:
-\begin{equation}
+\begin{equation}\label{eq:werner_parameter_distillation}
     W_{out} = \frac{\sum_{k=1}^{\infty} \left[ \left( \ast_{i=1}^{k-1} P_f^{(j)} \right) \ast (P_s \cdot W_s) \right] (t)}{\Pr(T_{out} = t)}.
 \end{equation}
 
@@ -472,7 +471,7 @@ The protocol is visualized in Figure \ref{fig:mixed_protocol_sketch}, and result
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.8\linewidth]{images/mixed_protocol_no_cutoffs.png}
-    \caption{These plots show the waiting time distribution and the Werner parameter for the entanglement generation, distillation, and swapping protocol. (a) after the generation of the elementary links and the distillation of 3 low-quality links $A-B$ into a high-quality one. (b) Consider $i \in {1,2,3}$. Three pair of links $(B_i-C_i, C_i-D_i)$, are swapped into the links $B_i-D_i$. (c) The three low-quality links $B_i-D_i$ are distilled into a single high-quality link $B-D$. (d) The end-link $A-D$ is produced starting from $A-B$ and $B-D$. The secret key rate at the end of the protocol is $3.1 * 10^{-3}$.} % todo: introduce secret key rate
+    \caption{These plots show the waiting time distribution and the Werner parameter for the mixed protocol described in Figure \ref{fig:mixed_protocol_sketch}. (a) After the generation of the elementary links and the distillation of 3 low-quality links $A-B$ into a high-quality one. (b) Consider $i \in {1,2,3}$. Three pair of links $(B_i-C_i, C_i-D_i)$, are swapped into the links $B_i-D_i$. (c) The three low-quality links $B_i-D_i$ are distilled into a single high-quality link $B-D$. (d) The end-link $A-D$ is produced starting from $A-B$ and $B-D$. The secret key rate at the end of the protocol is $3.1 * 10^{-3}$.} % todo: introduce secret key rate
     \label{fig:mixed_protocol} 
 \end{figure}
 
@@ -612,19 +611,20 @@ Thus, cutoffs preceed either entanglement swapping or distillation. Therefore, w
 
 
 \subsection*{Waiting Time Distribution for Entanglement Distillation}
-Since the discrete Fourier transform acts on a finite sequence of numbers we first truncate the probability distribution at a fixed time $L$,
 
-The Fourier transform is a linear map.
+Since the discrete Fourier transform acts on a finite sequence of numbers we first truncate the probability distribution at a fixed time $L$.
 
-Moreover it converts convolutions into element-wise multiplication
-
-As a consequence, taking the Fourier transform of both sides of Equation ?? yields
+The Fourier transform is a linear map, converting convolutions into element-wise multiplication. As a consequence, taking the Fourier transform of both sides of Equation \ref{eq:waiting_time_distillation}, and then taking the inverse Fourier transform, yields
+\begin{equation}\label{eq:waiting_time_distillation_fourier}
+    \Pr(T_{\text{out}} = t) = \mathcal{F}^{-1} \left[ \frac{\mathcal{F}[P_s]}{1 - \mathcal{F}[P_f]} \right](t)
+\end{equation}
+which is a more elegant and efficient way to compute the waiting time distribution.
 
 \paragraph*{Full Derivation}
 
-The probability distribution of the total waiting time \( T_{\text{out}} \) for all attempts is given by:
+The probability distribution of the total waiting time \( T_{\text{out}} \) for all attempts is given by Equation \ref{eq:waiting_time_distillation}, which we restate here for convenience:
 \begin{equation}
-    \Pr(T_{\text{out}} = t) = \sum_{k=1}^{\infty} \left[ \left(\ast_{j=1}^{k-1} P_f^{(j)} \right) \ast P_s \right](t)
+    \Pr(T_{\text{out}} = t) = \sum_{k=1}^{\infty} \left[ \left(\ast_{j=1}^{k-1} P_f^{(j)} \right) \ast P_s \right](t) .
 \end{equation}
 
 Applying the Fourier transform \(\mathcal{F}\) to both sides, we get:
@@ -632,53 +632,50 @@ Applying the Fourier transform \(\mathcal{F}\) to both sides, we get:
     \mathcal{F}[\Pr(T_{\text{out}} = t)] = \sum_{k=1}^{\infty} \left[ \left(\prod_{j=1}^{k-1} \mathcal{F}[P_f^{(j)}] \right) \cdot \mathcal{F}[P_s] \right](t)
 \end{equation}
 
-For $k$ attempts, the productory \(\prod_{j=1}^{k-1} \mathcal{F}[P_f^{(j)}]\) represents the convolution of the failure distributions in the Fourier domain. 
-
-From the assumption made, these distributions \( P_f^{(j)} \) are identical, so:
+For $k$ attempts, the productory \(\prod_{j=1}^{k-1} \mathcal{F}[P_f^{(j)}]\) represents the convolution of the failure distributions in the Fourier domain. From the assumption made, these distributions \( P_f^{(j)} \) are identical copies (see Appendix \ref{paragraph:copies_of_a_random_variable}), so:
 \begin{equation}
     \prod_{j=1}^{k-1} \mathcal{F}[P_f^{(j)}] = \left( \mathcal{F}[P_f] \right)^{k-1}
 \end{equation}
-
-Using the identity for the sum of a geometric series \(\sum_{k=1}^{\infty} x^{k-1} = \frac{1}{1-x}\), the equation simplifies to:
+which means that the equation simplifies to
 \begin{equation}
-    \mathcal{F}[\Pr(T_{\text{out}} = t)] = \sum_{k=1}^{\infty} \left( \left( \mathcal{F}[P_f] \right)^{k-1} \cdot \mathcal{F}[P_s] \right)
+    \mathcal{F}[\Pr(T_{\text{out}} = t)] = \sum_{k=1}^{\infty} \left( \left( \mathcal{F}[P_f] \right)^{k-1} \cdot \mathcal{F}[P_s] \right) .
 \end{equation}
 
-Recognizing the geometric series in the sum, we obtain:
+Using the identity for the sum of a geometric series \(\sum_{k=1}^{\infty} x^{k-1} = \frac{1}{1-x}\), we can state that
 \begin{equation}
-\sum_{k=1}^{\infty} \left( \mathcal{F}[P_f] \right)^{k-1} = \frac{1}{1 - \mathcal{F}[P_f]}
+    \sum_{k=1}^{\infty} \left( \mathcal{F}[P_f] \right)^{k-1} = \frac{1}{1 - \mathcal{F}[P_f]}
 \end{equation}
-
-% Final simplified form
-Thus, incorporating the success term \(\mathcal{F}[P_s]\), we get:
+thus, incorporating the success term \(\mathcal{F}[P_s]\), we get:
 \begin{equation}
 \mathcal{F}[\Pr(T_{\text{out}} = t)] = \frac{\mathcal{F}[P_s]}{1 - \mathcal{F}[P_f]}
 \end{equation}
 
-% Applying the inverse Fourier transform to return to the time domain
 Finally, applying the inverse Fourier transform \(\mathcal{F}^{-1}\), we obtain:
 \begin{equation}
-\Pr(T_{\text{out}} = t) = \mathcal{F}^{-1} \left[ \frac{\mathcal{F}[P_s]}{1 - \mathcal{F}[P_f]} \right](t)
+    \Pr(T_{\text{out}} = t) = \mathcal{F}^{-1} \left[ \frac{\mathcal{F}[P_s]}{1 - \mathcal{F}[P_f]} \right](t)
 \end{equation}
 
 \subsection*{Werner Parameter for Entanglement Distillation}
 
-The transformation of Equation ?? to Fourier space involves the same concepts and yields
-% todo: include it
+The transformation of Equation \ref{eq:werner_parameter_distillation} to Fourier space involves the same concepts and yields
+\begin{equation}\label{eq:werner_parameter_distillation_fourier}
+    W_{\text{out}} = \mathcal{F}^{-1} \left[ \frac{\mathcal{F}[P_s \cdot W_s]}{1 - \mathcal{F}[P_f]} \right] \frac{1}{\Pr(T_{out}=t)}(t) .
+\end{equation}
 
 Again, the convolution has become a productory of identical copies of the same random variable; the resulting term, exponentiated to $k-1$, is then transformed through geometric series, yielding the final expression.
 
 \subsection*{Entanglement Swapping in the Fourier Domain}
 
-Equation ?? and ?? can also be moved to the Fourier space as follows.
-
-The derivation is simple: both expressions can be written in Fourier space by substituting $P_s = p_{swap} \cdot m(t)$ and $Pf = (1 - pswap) \cdot m(t)$ in ?? and ??.
-
-As a result, the waiting time distribution in the Fourier space is:
-% include it
-
-and the Werner parameter is 
-% include it
+Equations \ref{eq:waiting_time_swap} and \ref{werner_parameter_swap} can also be moved to the Fourier space as follows.
+Both expressions can be written in Fourier space by substituting $P_s = p_{swap} \cdot m(t)$ and $P_f = (1 - p_{swap}) \cdot m(t)$ in the Equations for entanglement distillation \ref{eq:waiting_time_distillation_fourier} and \ref{eq:werner_parameter_distillation_fourier}, yielding
+\begin{equation}
+    \Pr(T_{\text{out}} = t) = \mathcal{F}^{-1} \left[ \frac{\mathcal{F}[p_{swap} \cdot m(t)]}{1 - \mathcal{F}[(1 - p_{swap}) \cdot m(t)]} \right](t)
+\end{equation}
+and
+\begin{equation}
+    W_{\text{out}} = \mathcal{F}^{-1} \left[ \frac{\mathcal{F}[p_{swap} \cdot m(t) \cdot W_s]}{1 - \mathcal{F}[(1 - p_{swap}) \cdot m(t)]} \right] \frac{1}{\Pr(T_{out}=t)}(t)
+\end{equation}
+where $m$ is defined in Equation \ref{eq:pdf_waiting_time_pair_convolution}.
 
 \subsection*{Cutoffs in the Fourier Domain}
 % derivation
@@ -773,7 +770,7 @@ Two random variables $X$ and $Y$ are independent if
 \end{equation}
 for all $x$ and $y$ in the domain.
 
-\paragraph*{Copies of a Random Variable}\label{paragraph:copies_of_a_random_variable} By a \textit{copy} of $X$, we mean a fresh random variable which is independent from $X$ and identically distributed (i.i.d.).
+\paragraph{Copies of a Random Variable}\label{paragraph:copies_of_a_random_variable} By a \textit{copy} of $X$, we mean a fresh random variable which is independent from $X$ and identically distributed (i.i.d.).
 We will denote a copy by a superscript in parentheses. For example, $X^{(1)}$, $X^{(142)}$ and $X^{(A)}$ are all copies of $X$.
 
 \paragraph*{Expected Value}
