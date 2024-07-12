@@ -941,11 +941,11 @@ INPUT images/dist.png
 INPUT ./images/dist.png
 INPUT ./images/dist.png
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmti12.tfm
-INPUT ./images/swap_example_30000.png
-INPUT ./images/swap_example_30000.png
-INPUT images/swap_example_30000.png
-INPUT ./images/swap_example_30000.png
-INPUT ./images/swap_example_30000.png
+INPUT ./images/swap_example_3000.png
+INPUT ./images/swap_example_3000.png
+INPUT images/swap_example_3000.png
+INPUT ./images/swap_example_3000.png
+INPUT ./images/swap_example_3000.png
 INPUT ./images/swap_n3_comparison.png
 INPUT ./images/swap_n3_comparison.png
 INPUT images/swap_n3_comparison.png
@@ -971,6 +971,26 @@ INPUT ./images/mixed_protocol_cutoffs.png
 INPUT images/mixed_protocol_cutoffs.png
 INPUT ./images/mixed_protocol_cutoffs.png
 INPUT ./images/mixed_protocol_cutoffs.png
+INPUT ./images/dist_tests/only generation.png
+INPUT ./images/dist_tests/only generation.png
+INPUT images/dist_tests/only generation.png
+INPUT ./images/dist_tests/only generation.png
+INPUT ./images/dist_tests/only generation.png
+INPUT ./images/dist_tests/distillation after generation.png
+INPUT ./images/dist_tests/distillation after generation.png
+INPUT images/dist_tests/distillation after generation.png
+INPUT ./images/dist_tests/distillation after generation.png
+INPUT ./images/dist_tests/distillation after generation.png
+INPUT ./images/dist_tests/two distillations after generation.png
+INPUT ./images/dist_tests/two distillations after generation.png
+INPUT images/dist_tests/two distillations after generation.png
+INPUT ./images/dist_tests/two distillations after generation.png
+INPUT ./images/dist_tests/two distillations after generation.png
+INPUT ./images/dist_tests/only swapping.png
+INPUT ./images/dist_tests/only swapping.png
+INPUT images/dist_tests/only swapping.png
+INPUT ./images/dist_tests/only swapping.png
+INPUT ./images/dist_tests/only swapping.png
 INPUT main.aux
 INPUT ./main.out
 INPUT ./main.out
