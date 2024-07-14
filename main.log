@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2024.4.9)  12 JUL 2024 12:59
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2024.4.9)  14 JUL 2024 12:10
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -688,64 +688,64 @@ l.738 \chapter
               *{Mathematical Background} % todo: when merging, divide math. ... <./images/mixed_protocol_cutoffs.png>] [28
 
 ] [29] [30] [31] [32]
-<images/dist_tests/only generation.png, id=383, 1084.05pt x 361.35pt>
+<images/dist_tests/only generation.png, id=384, 1084.05pt x 361.35pt>
 File: images/dist_tests/only generation.png Graphic file (type png)
 <use images/dist_tests/only generation.png>
-Package pdftex.def Info: images/dist_tests/only generation.png  used on input line 922.
+Package pdftex.def Info: images/dist_tests/only generation.png  used on input line 919.
 (pdftex.def)             Requested size: 460.72124pt x 153.57448pt.
  [33
 
 ]
-<images/dist_tests/distillation after generation.png, id=392, 1084.05pt x 361.35pt>
+<images/dist_tests/distillation after generation.png, id=393, 1084.05pt x 361.35pt>
 File: images/dist_tests/distillation after generation.png Graphic file (type png)
 <use images/dist_tests/distillation after generation.png>
-Package pdftex.def Info: images/dist_tests/distillation after generation.png  used on input line 961.
+Package pdftex.def Info: images/dist_tests/distillation after generation.png  used on input line 955.
 (pdftex.def)             Requested size: 460.72124pt x 153.57448pt.
  [34pdfTeX warning (ext4): destination with the same identifier (name{figure.Alph0.10}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.984 \end{equation*}
-                     pdfTeX warning (ext4): destination with the same identifier (name{figure.Alph0.11}) has been already used, duplicate ignored
+l.985 
+       <./images/dist_tests/only generation.png>] [35pdfTeX warning (ext4): destination with the same identifier (name{figure.Alph0.11}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.984 \end{equation*}
-                      <./images/dist_tests/only generation.png> <./images/dist_tests/distillation after generation.png>] [35]
-<images/dist_tests/two distillations after generation.png, id=416, 1084.05pt x 361.35pt>
+l.1006 T
+        o consider distillation success after failure we compute $[P_s \ast ... <./images/dist_tests/distillation after generation.png>]
+<images/dist_tests/two distillations after generation.png, id=422, 1084.05pt x 361.35pt>
 File: images/dist_tests/two distillations after generation.png Graphic file (type png)
 <use images/dist_tests/two distillations after generation.png>
-Package pdftex.def Info: images/dist_tests/two distillations after generation.png  used on input line 1064.
+Package pdftex.def Info: images/dist_tests/two distillations after generation.png  used on input line 1059.
 (pdftex.def)             Requested size: 460.72124pt x 153.57448pt.
- [36]
-<images/dist_tests/only swapping.png, id=430, 1084.05pt x 361.35pt>
+ [36] [37pdfTeX warning (ext4): destination with the same identifier (name{figure.Alph0.12}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.1098 \end{equation}
+                      <./images/dist_tests/two distillations after generation.png>]
+<images/dist_tests/only swapping.png, id=446, 1084.05pt x 361.35pt>
 File: images/dist_tests/only swapping.png Graphic file (type png)
 <use images/dist_tests/only swapping.png>
-Package pdftex.def Info: images/dist_tests/only swapping.png  used on input line 1122.
+Package pdftex.def Info: images/dist_tests/only swapping.png  used on input line 1118.
 (pdftex.def)             Requested size: 460.72124pt x 153.57448pt.
- [37pdfTeX warning (ext4): destination with the same identifier (name{figure.Alph0.12}) has been already used, duplicate ignored
+ [38pdfTeX warning (ext4): destination with the same identifier (name{figure.Alph0.13}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1128 \begin{equation*}
-                         <./images/dist_tests/two distillations after generation.png>] [38pdfTeX warning (ext4): destination with the same identifier (name{figure.Alph0.13}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.1146 \end{document}
-                      <./images/dist_tests/only swapping.png>] (./main.aux)
+l.1140 \end{equation*}
+                       <./images/dist_tests/only swapping.png>] [39] (./main.aux)
 Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 24806 strings out of 480171
- 436325 string characters out of 5894490
+ 24808 strings out of 480171
+ 436365 string characters out of 5894490
  1103361 words of memory out of 5000000
- 42101 multiletter control sequences out of 15000+600000
+ 42102 multiletter control sequences out of 15000+600000
  480822 words of font info for 74 fonts, out of 8000000 for 9000
  59 hyphenation exceptions out of 8191
  84i,14n,89p,1461b,2045s stack positions out of 5000i,500n,10000p,200000b,80000s
  </home/lax/.texlive2021/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1200.600pk></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on main.pdf (38 pages, 1090708 bytes).
+Output written on main.pdf (39 pages, 1093767 bytes).
 PDF statistics:
- 564 PDF objects out of 1000 (max. 8388607)
- 466 compressed objects within 5 object streams
- 235 named destinations out of 1000 (max. 500000)
+ 575 PDF objects out of 1000 (max. 8388607)
+ 475 compressed objects within 5 object streams
+ 236 named destinations out of 1000 (max. 500000)
  78 words of extra memory for PDF output out of 10000 (max. 10000000)
 

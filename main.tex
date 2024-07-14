@@ -289,20 +289,20 @@ In order to find how the Werner parameter on level $n+1$ is expressed as a funct
     \item $v_{j}$ to the output link's Werner parameter if the swap were successful. 
 \end{itemize}
 
-From previus results, we found that the total waiting time is given by $\sum_{j=1}^{k} m_{j}$, the sum of the \begin{equation*}
+From previous results, we found that the total waiting time is given by $\sum_{j=1}^{k} m_{j}$, the sum of the \begin{equation*}
     \begin{array}{|c|c|c|c|}
         \hline
         \text{Time Step} & \text{PMF} & \text{CDF} & \text{Werner} \\
         \hline
-        t_1 & 0.50000 & 0.50000 & 0.90000 \\
+        t = 1 & 0.50000 & 0.50000 & 0.90000 \\
         \hline
-        t_2 & 0.25000 & 0.75000 & 0.90000 \\
+        t = 2 & 0.25000 & 0.75000 & 0.90000 \\
         \hline
-        t_3 & 0.12500 & 0.87500 & 0.90000 \\
+        t = 3 & 0.12500 & 0.87500 & 0.90000 \\
         \hline
-        t_{10} & 0.00098 & 0.99902 & 0.90000 \\
+        t = 10 & 0.00098 & 0.99902 & 0.90000 \\
         \hline
-        t_{50} & 0.00000 & 1.00000 & 0.90000 \\
+        t = 50 & 0.00000 & 1.00000 & 0.90000 \\
         \hline
     \end{array}
 \end{equation*}successful one, the output link is the last produced link and therefore its Werner parameter equals $v_{k}$. 
@@ -423,7 +423,7 @@ We then express the total waiting time distribution $T_{out}$ and the Werner par
 To compute he waiting time distribution we consider the generation time of a successful or failed attempt separately and use the joint distribution of $M$ and $Y$, where again $M$ is the waiting time and $Y$ is a binary variable that indicates the success of the attempt. % todo: maybe ref
 
 We define the joint distribution that \textbf{one attempt} succeeds or fails and takes time $t$ as % todo: maybe sep. in two lines the max
-\begin{align}
+\begin{align}\label{eq:waiting_time_success_failure}
     P_s(t) &:= \Pr(M = t, Y = 1) = \sum_{t_A, t_B : t = \max(t_A, t_B) + t_c} \Pr(T_A = t_A, T_B = t_B) \cdot p(t_A, t_B) \\
     P_f(t) &:= \Pr(M = t, Y = 0) = \sum_{t_A, t_B : t = \max(t_A, t_B) + t_c} \Pr(T_A = t_A, T_B = t_B) \cdot [1 - p(t_A, t_B)]
 \end{align}
@@ -903,54 +903,48 @@ The CDF of a geometric distribution can be derived from its PDF as follows:
 
 \chapter*{A Numerical Example}
 
-This appendix contains a numerical example of the protocols described.
-
-Consider the following parameters:
+This appendix contains a numerical example of the protocols described. We consider the following parameters:
 \begin{itemize}
-    \item The probability of success for entanglement generation is $p_{\text{gen}} = 0.5$,
+    \item the probability of success for entanglement generation is $p_{\text{gen}} = 0.5$,
     \item the probability of success for entanglement swapping is $p_{\text{dist}} = 0.5$,
     \item the initial Werner parameter of the generated links is $w_{\text{gen}} = 0.9$,
 \end{itemize}
-
-There is no decoherence in this example.
+and assume that the system is not subjected to decoherence ($t_{coh} = \infty$).
 
 \section*{Entanglement Generation}
 
-The probability distribution of the waiting time for entanglement generation is a geometric distribution with $p = 0.5$, shown in Figure \ref{fig:gen_waiting_time}.
+The probability distribution of the waiting time for entanglement generation is a geometric distribution (see Appendix \ref{section:geometric_distribution}) with $p = 0.5$, shown in Figure \ref{fig:gen_waiting_time}.
 \begin{figure}[ht]
     \centering
     \includegraphics[width=1\linewidth]{images/dist_tests/only generation.png}
-    \caption{The probability distribution of the waiting time for entanglement generation.}
+    \caption{Plots for entanglement generation. The PMF is a geometric distribution governed by $p_{gen} = 0.5$; for such high value, the CDF reaches a value close to 1 in few time steps. The Werner parameter is costant.}
     \label{fig:gen_waiting_time}
 \end{figure}
 
-In the table below, we show the probability distribution of the waiting time for entanglement generation, as well as the corresponding Werner parameter, for some selected times.
+In the table below, we show the probability distribution of the waiting time for entanglement generation, as well as the corresponding output average Werner parameter, for some selected times.
 
 \begin{equation*}
     \begin{array}{|c|c|c|c|}
         \hline
         \text{Time Step} & \text{PMF} & \text{CDF} & \text{Werner} \\
         \hline
-        t_1 & 0.50000 & 0.50000 & 0.90000 \\
+        t = 1 & 0.50000 & 0.50000 & 0.90000 \\
         \hline
-        t_2 & 0.25000 & 0.75000 & 0.90000 \\
+        t = 2 & 0.25000 & 0.75000 & 0.90000 \\
         \hline
-        t_3 & 0.12500 & 0.87500 & 0.90000 \\
+        t = 3 & 0.12500 & 0.87500 & 0.90000 \\
         \hline
-        t_{10} & 0.00098 & 0.99902 & 0.90000 \\
+        t = 10 & 0.00098 & 0.99902 & 0.90000 \\
         \hline
-        t_{50} & 0.00000 & 1.00000 & 0.90000 \\
+        t = 50 & 0.00000 & 1.00000 & 0.90000 \\
         \hline
     \end{array}
     \label{tab:gen_waiting_time}
 \end{equation*}
 
-In this particular example, as $ p = 1 - p = 0.5$, The probability of achieving a link at time $t = i$ is $0.5^i$.
+In this particular example, as $p_{gen} = (1 - p_{gen}) = 0.5$, The probability of achieving a link at time $t = i$ is $(0.5)^i$.
 
-For entanglement generation, for all $t$, the Werner parameter is the constant
-\begin{equation}
-    W_0 = 0.9 .
-\end{equation}
+For entanglement generation, for all $t$, the average Werner parameter is the constant $w_0 = 0.9$. As a matter of fact, indipendently from the number of attempts needed to achieve a link, its quality will always be the same.
 
 \section*{Entanglement Distillation}
 
@@ -959,7 +953,7 @@ The probability distribution of the waiting time for entanglement distillation i
 \begin{figure}[ht]
     \centering
     \includegraphics[width=1\linewidth]{images/dist_tests/distillation after generation.png}
-    \caption{The probability distribution of the waiting time for entanglement generation.}
+    \caption{Plots for entanglement distillation, after generation. The CDF for the waiting time, for all the values of $t$, is shifted to the right with respect to Figure \ref{fig:gen_waiting_time} of entanglement generation only. This indicates longer waiting times. The Werner parameter is again costant, as no decoherence is considered in this example.}
     \label{fig:dist_waiting_time}
 \end{figure}
 
@@ -970,47 +964,46 @@ In the table below, we show, for some selected times, the PDF, the CDF, and the 
         \hline
         \text{Time Step} & \text{PMF} & \text{CDF} & \text{Werner} \\
         \hline
-        t_1 & 0.22625 & 0.22625 & 0.92818 \\
+        t = 1 & 0.22625 & 0.22625 & 0.92818 \\
         \hline
-        t_2 & 0.28819 & 0.51444 & 0.92818 \\
+        t = 2 & 0.28819 & 0.51444 & 0.92818 \\
         \hline
-        t_3 & 0.19739 & 0.71183 & 0.92818 \\
+        t = 3 & 0.19739 & 0.71183 & 0.92818 \\
         \hline
-        t_{10} & 0.00460 & 0.99370 & 0.92818 \\
+        t = 10 & 0.00460 & 0.99370 & 0.92818 \\
         \hline
-        t_{50} & 0.00000 & 1.00000 & 0.92819 \\
+        t = 50 & 0.00000 & 1.00000 & 0.92819 \\
         \hline
     \end{array}
 \end{equation*}
 
-Here, computations are more complex.
+In the following, we show the calculations for $t={1,2}$ rows.
 
 \paragraph*{Probability Distribution Function}
 
-Here we show the computation of the probability distribution function for the waiting time of entanglement distillation, for some selected times.
+Here, we show the computation of the probability distribution function $\Pr(T_{\text{d}} = t)$ for the waiting time of entanglement distillation, for some selected times.
 
-For $t = 1$, we have ...
+For $t = 1$, we consider the case when the distillation suceeds immediately. Hence we take into consideration only the random variable $P_s$: to achieve the distilled link at time $t=1$, the protocol has to succeeds at its first attempt: 
 \begin{equation}
-    \Pr(T_{\text{out}} = 1) = P_s(1) = 0.5 \cdot 0.5 \cdot 0.905 = 0.22625
+    \Pr(T_{\text{d}} = 1) = P_s(t = 1) = 0.5 \cdot 0.5 \cdot 0.905 = 0.22625
 \end{equation}
+where we plugged $t = 1$ in the Equation \ref{eq:waiting_time_success_failure} for one successful attempt of distillation.
 
-For $t = 2$, we have ...
-
+For $t = 2$, we have to consider both failure and success random variables described in Equation \ref{eq:waiting_time_success_failure}, which are then used in Equation \ref{eq:waiting_time_distillation}. Plugging $t=2$, and expanding the equation for clarity, we get 
 \begin{equation}\label{eq:distillation_t2}
-    \Pr(T_{\text{out}} = 2) = P_s(2) + (P_f \ast P_s)(2) + (P_f \ast P_f \ast P_s)(2) + \ldots
+    \Pr(T_{\text{d}} = 2) = P_s(2) + (P_f \ast P_s)(2) + (P_f \ast P_f \ast P_s)(2) + \ldots
 \end{equation}
+where we have theoretically an infinite number of terms, truncated in practical calculations.
 
-Where ...
+We compute the values for a success and a failure at time $t=2$ expanding the sum in Equation \ref{eq:waiting_time_success_failure}
+\begin{align}
+    P_s(2) &= \left(0.25 \cdot 0.5 \cdot 0.905\right) + \left(0.5 \cdot 0.25 \cdot 0.905\right) + \left(0.25 \cdot 0.25 \cdot 0.905\right) = \\
+           &= 0.25 \cdot \left(0.5 + 0.5 + 0.25 \right) \cdot 0.905 = 0.28281 \\
+    P_f(2) &= 0.25 \left(0.5 + 0.5 + 0.25\right) \cdot 0.095 = 0.02968
+\end{align}
+where we considered all the contributions given by both links succeding at times $t={1,2}$, as the distillation starts when both input links are generated.
 
-\begin{equation}
-    P_s(2) = 0.25 \left(0.2310 \cdot 0.805\right) = 0.28281
-\end{equation}
-
-\begin{equation}
-    P_f(2) = 0.85 \left(1.25\right) \cdot 0.085 = 0.02668
-\end{equation}
-
-To compute $[P_s \ast P_f](2)$ \textbf{we need to convolve the PDFs of $P_s$ and $P_f$} (see Appendix \ref{eq:convolution}):
+To consider distillation success after failure we compute $[P_s \ast P_f](2)$. To do that \textbf{we need to convolve the PDFs of $P_s$ and $P_f$} (see Appendix \ref{eq:convolution}):
 \begin{equation*}
     \begin{array}{|c|c|c|c|c|}
         \hline
@@ -1020,44 +1013,46 @@ To compute $[P_s \ast P_f](2)$ \textbf{we need to convolve the PDFs of $P_s$ and
         \hline
         1 & 0.22625 & 0.02375 & 0 & 0 \\
         \hline
-        2 & 0.28281 & 0.02468 & 5.3736 \cdot 10^{-3} & 0 \\
+        2 & 0.28281 & 0.02968 & 5.3734 \cdot 10^{-3} & 0 \\
         \hline
     \end{array}
 \end{equation*}
 where we computed $[P_s \ast P_f](2)$ according to Equation \ref{eq:convolution}:
 \begin{equation}
-    [P_s * P_f](2) = 0 + 0.22625 \cdot 0.02325 + 0 = 5.3736 \cdot 10^{-3} .
+    [P_s * P_f](2) = 0 + 0.22625 \cdot 0.02325 + 0 = 5.3734 \cdot 10^{-3} .
 \end{equation}
 
 Thus, the probability distribution function for $t = 2$ is, according to Equation \ref{eq:distillation_t2}:
 \begin{equation}
-    \Pr(T_{\text{out}} = 2) = 0.28281 + 0.00537 = 0.28819
+    \Pr(T_{\text{d}} = 2) = 0.28281 + 0.00537 = 0.28819
 \end{equation}
-where we disregard the higher order terms, as they are all zero.
+where we disregarded the higher order terms, as they are all zero.
 
 \paragraph*{Werner Parameter}
 
-We first compute the probability of success for the distillation operation, which is given by the formula
+We first compute the probability of success for the distillation operation, which is given by
 \begin{equation}
-    p_{\text{dist}} = \frac{1 + w_A w_B}{2}
+    p_d = \frac{1 + w_A w_B}{2} = \frac{1+2w_0}{2}
 \end{equation}
 and is equal to
 \begin{equation}
-    p_{\text{dist}} = (1 + 0.81) / 2 = 0.905 .
+    p_d = (1 + 0.81) / 2 = 0.905 .
 \end{equation}
 
 The Werner parameter for the output links of the distillation operation is given by
 \begin{equation}
-    W_{\text{out}} = \frac{w_A + w_B + 4 w_A \cdot w_B}{6 p_{\text{dist}}}
+    w_d = \frac{w_A + w_B + 4 w_A \cdot w_B}{6 p_d} = \frac{2w_0 + 4w_0^2}{6 p_d}
 \end{equation}
 and is equal to
 \begin{equation}
-    W_{\text{out}} = 0.92818 .
+    w_d = 0.92818 .
 \end{equation}
+
+Since we are not considering decoherence in this example, the average ouput Werner parameter of the distilled link is constant for all $t$.
 
 \section*{Two-Level Entanglement Distillation}
 
-Now, on top of the entanglement distillation, we add a second level of distillation. The probability distribution of the waiting time for this two-level entanglement distillation is shown in Figure \ref{fig:two_level_distillation_waiting_time}.
+Now, on top of the entanglement distillation, we add a second level of distillation. The probability distribution of the waiting time for this two-level entanglement distillation $\Pr(T_{dd} = t)$ is shown in Figure \ref{fig:two_level_distillation_waiting_time}.
 
 \begin{figure}[ht]
     \centering
@@ -1066,53 +1061,54 @@ Now, on top of the entanglement distillation, we add a second level of distillat
     \label{fig:two_level_distillation_waiting_time}
 \end{figure}
 
-In the table below, we show, for some selected times, the PDF, the CDF, and the corresponding Werner parameter for the waiting time of two-level entanglement distillation.
+In the table below, we show, for some selected times, the PDF, the CDF, and the corresponding Werner parameter for this protocol.
 \begin{equation*}
     \begin{array}{|c|c|c|c|}
         \hline
         \text{Time Step} & \text{PMF} & \text{CDF} & \text{Werner} \\
         \hline
-        t_1 & 0.04764 & 0.04764 & 0.94948 \\
+        t = 1 & 0.04764 & 0.04764 & 0.94948 \\
         \hline
-        t_2 & 0.19884 & 0.24649 & 0.94948 \\
+        t = 2 & 0.19884 & 0.24649 & 0.94948 \\
         \hline
-        t_3 & 0.22670 & 0.47319 & 0.94948 \\
+        t = 3 & 0.22670 & 0.47319 & 0.94948 \\
         \hline
-        t_{10} & 0.01406 & 0.97442 & 0.94948 \\
+        t = 10 & 0.01406 & 0.97442 & 0.94948 \\
         \hline
-        t_{50} & 0.00000 & 1.00000 & 0.94948 \\
+        t = 50 & 0.00000 & 1.00000 & 0.94948 \\
         \hline
     \end{array}
 \end{equation*}
 
 \paragraph*{Probability Distribution Function}
 
-For $t = 1$, we have ...
+For $t = 1$, we have again the edge case for which we consider only an attempt succeeding at time $t=1$, without failures  
 \begin{equation}
-    \Pr(T_{\text{out}} = 1)' = P_s'(1) = 0.22625 \cdot 0.93075 = 0.04764 
+    \Pr(T_{dd} = 1) = P_s'(1) = 0.22625 \cdot 0.93075 = 0.04764 
 \end{equation}
+where we used the prime notation to differentiate this from the previous case. 
 
-For $t = 2$, we have ...
+For $t = 2$,
 \begin{equation}
-    \Pr(T_{\text{out}} = 2)' = P_s'(2) + (P_f' \ast P_s')(2) + (P_f' \ast P_f' \ast P_s')(2) + \ldots
+    \Pr(T_{dd} = 2) = P_s'(2) + (P_f' \ast P_s')(2) + (P_f' \ast P_f' \ast P_s')(2) + \ldots
 \end{equation}
-which is computed as before, and yields
+is computed as before, and yields
 \begin{equation}
-    \Pr(T_{\text{out}} = 2)' = 0.19884
+    \Pr(T_{dd} = 2) = 0.19884 .
 \end{equation}
-and so on.
 
 \paragraph*{Werner Parameter}
 
-The probability of success for the two-level distillation operation is given by
+The probability of success for the two-level distillation operation is
 \begin{equation}
-    p_{\text{dist}}' = \frac{1 + w_A w_B}{2} = 0.93075 .
+    p_{dd} = \frac{1 + w_A w_B}{2} = \frac{1 + w_d^2}{2} = 0.93075 .
 \end{equation}
 
 The Werner parameter for the output links of the two-level distillation operation is given by
 \begin{equation}
-    W_{\text{out}}' = \frac{w_A + w_B + 4 w_A \cdot w_B}{6 p_{\text{dist}}} = 0.94974 .
+    w_{dd} = \frac{w_A + w_B + 4 w_A \cdot w_B}{6 p_{dd}} = \frac{2 w_d + 4 w_d^2}{6 p_{dd}} = 0.94974
 \end{equation}
+and, again, it is constant for all the times $t$ as no decoherence is considered.
 
 \section*{Entanglement Swapping}
 
@@ -1130,15 +1126,15 @@ In the table below, we show, for some selected times, the PDF, the CDF, and the 
         \hline
         \text{Time Step} & \text{PMF} & \text{CDF} & \text{Werner} \\
         \hline
-        t_1 & 0.12500 & 0.12500 & 0.81000 \\
+        t = 1 & 0.12500 & 0.12500 & 0.81000 \\
         \hline
-        t_2 & 0.17188 & 0.29688 & 0.81000 \\
+        t = 2 & 0.17188 & 0.29688 & 0.81000 \\
         \hline
-        t_3 & 0.14258 & 0.43945 & 0.81000 \\
+        t = 3 & 0.14258 & 0.43945 & 0.81000 \\
         \hline
-        t_{10} & 0.02913 & 0.88595 & 0.81000 \\
+        t = 10 & 0.02913 & 0.88595 & 0.81000 \\
         \hline
-        t_{50} & 0.00000 & 0.99999 & 0.81000 \\
+        t = 50 & 0.00000 & 0.99999 & 0.81000 \\
         \hline
     \end{array}
 \end{equation*}
