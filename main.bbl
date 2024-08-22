@@ -1,0 +1,119 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{ynt/global//global/global}
+    \entry{Kuzmin_2021}{article}{}
+      \name{author}{2}{}{%
+        {{hash=24ec58d54c93a3dead3c7ddc23eb7d27}{%
+           family={Kuzmin},
+           familyi={K\bibinitperiod},
+           given={Viacheslav\bibnamedelima V.},
+           giveni={V\bibinitperiod\bibinitdelim V\bibinitperiod}}}%
+        {{hash=e398313a2f6e519ef26669c01140f8e9}{%
+           family={Vasilyev},
+           familyi={V\bibinitperiod},
+           given={Denis\bibnamedelima V.},
+           giveni={D\bibinitperiod\bibinitdelim V\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {American Physical Society (APS)}%
+      }
+      \strng{namehash}{6ac22e1afbecbfaff119901af1116bf3}
+      \strng{fullhash}{6ac22e1afbecbfaff119901af1116bf3}
+      \strng{bibnamehash}{6ac22e1afbecbfaff119901af1116bf3}
+      \strng{authorbibnamehash}{6ac22e1afbecbfaff119901af1116bf3}
+      \strng{authornamehash}{6ac22e1afbecbfaff119901af1116bf3}
+      \strng{authorfullhash}{6ac22e1afbecbfaff119901af1116bf3}
+      \field{labelalpha}{KV21}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{2469-9934}
+      \field{journaltitle}{Physical Review A}
+      \field{month}{3}
+      \field{number}{3}
+      \field{title}{Diagrammatic technique for simulation of large-scale quantum repeater networks with dissipating quantum memories}
+      \field{volume}{103}
+      \field{year}{2021}
+      \verb{doi}
+      \verb 10.1103/physreva.103.032618
+      \endverb
+      \verb{urlraw}
+      \verb http://dx.doi.org/10.1103/PhysRevA.103.032618
+      \endverb
+      \verb{url}
+      \verb http://dx.doi.org/10.1103/PhysRevA.103.032618
+      \endverb
+    \endentry
+    \entry{Li_2021}{article}{}
+      \name{author}{3}{}{%
+        {{hash=470f4babcad599bde2790c8b2f473c0f}{%
+           family={Li},
+           familyi={L\bibinitperiod},
+           given={Boxi},
+           giveni={B\bibinitperiod}}}%
+        {{hash=d1d072d2df4f0dbeb6c0a010cf3f233a}{%
+           family={Coopmans},
+           familyi={C\bibinitperiod},
+           given={Tim},
+           giveni={T\bibinitperiod}}}%
+        {{hash=131f909f610b4176d0c0079a6ac352a2}{%
+           family={Elkouss},
+           familyi={E\bibinitperiod},
+           given={David},
+           giveni={D\bibinitperiod}}}%
+      }
+      \list{publisher}{2}{%
+        {Institute of Electrical}%
+        {Electronics Engineers (IEEE)}%
+      }
+      \strng{namehash}{fea0c33bd11d6cd5068da286aebda8db}
+      \strng{fullhash}{fea0c33bd11d6cd5068da286aebda8db}
+      \strng{bibnamehash}{fea0c33bd11d6cd5068da286aebda8db}
+      \strng{authorbibnamehash}{fea0c33bd11d6cd5068da286aebda8db}
+      \strng{authornamehash}{fea0c33bd11d6cd5068da286aebda8db}
+      \strng{authorfullhash}{fea0c33bd11d6cd5068da286aebda8db}
+      \field{labelalpha}{LCE21}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{2689-1808}
+      \field{journaltitle}{IEEE Transactions on Quantum Engineering}
+      \field{title}{Efficient Optimization of Cutoffs in Quantum Repeater Chains}
+      \field{volume}{2}
+      \field{year}{2021}
+      \field{pages}{1\bibrangedash 15}
+      \range{pages}{15}
+      \verb{doi}
+      \verb 10.1109/tqe.2021.3099003
+      \endverb
+      \verb{urlraw}
+      \verb http://dx.doi.org/10.1109/TQE.2021.3099003
+      \endverb
+      \verb{url}
+      \verb http://dx.doi.org/10.1109/TQE.2021.3099003
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+
