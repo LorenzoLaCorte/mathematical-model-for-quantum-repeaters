@@ -34,28 +34,47 @@
 %       -> still I don't wanna do it, I think Brand is good for swapping, is easier to grasp first
 %       -> maybe the whole concept of forgetting sum in the W. parameter is tough, that can be simplified
 
+
+
+
+
 \chapter{Mathematical Model for Waiting Time and Fidelity}
+
+In this chapter, we present a mathematical model for the waiting time and fidelity of the end-to-end link, i.e. the entangled link connecting the two endpoints in the quantum repeater chain.
+
+The model described in this section is entirely based on the work of Li et al. \cite{Li_2021}, which builds upon the work of Brand et al. \cite{Brand_2020}.
+
+I did not introduce any new concepts or results, but rather focused on explaining the mathematical model used in the paper, providing a clear and concise explanation.
+The only personal contribution are the numerical examples included, useful for understanding the model (and not present in the original paper).
+
+\section{Introduction}
 
 We derive expressions for the waiting time and fidelity of the first generated end-to-end link in the repeater chain protocol. 
 
-The random variable $T_n$ \textbf{represents the waiting time in a $2n$-segment repeater chain}, and is derived recursively in the following sections.
+The random variable $T_n$ \textbf{represents the waiting time necessary to distribute entanglement} between the endpoints of a $2n$-segment repeater chain, and is derived recursively in the following sections.
 
-The random variable $W_n$ characterizes the Werner parameter of the pair, which stands in one-to-one correspondence to its fidelity $F_n$
+The random variable $W_n$ characterizes the Werner parameter of the produced entangled pair, which is related to its fidelity $F_n$ by
 \begin{equation}
-    F_n = \frac{1 + 3 W_n}{4}.
+    F_n = \frac{1 + 3 W_n}{4}
 \end{equation}
 and thus represents \textbf{the quality of the entanglement}.
+
+\paragraph{Class of Repeater Protocols.}
 
 The operations studied in this class of repeater protocols are
 \begin{itemize}
     \item entanglement generation over a single hop (\textit{GEN}),
-    \item entanglement swapping (\textit{SWAP}),
-    \item entanglement distillation (\textit{DIST}).
+    \item entanglement swapping (\textit{SWAP}) of two short-distance links into a single long-distance one,
+    \item entanglement distillation (\textit{DIST}) of two low-quality links into a single high-quality one.
 \end{itemize}
-also denoted in the following as \textbf{PROTOCOL-UNITs}. They all take a duration that is a multiple of ${L_0}/{c}$, the time to send information over a single segment.
-For this reason, it is common to denote the waiting time in \textbf{discrete units} of ${L_0}/{c}$, which is a convention we comply with for $T_n$. 
+These processes are denoted in the following as \textbf{PROTOCOL-UNITs}. They all take a duration that is a multiple of ${L_0}/{c}$, the time to send information over a single segment. For this reason, it is common to denote the waiting time in \textbf{discrete units} of ${L_0}/{c}$, which is a convention we comply with for $T_n$. 
+This will also be the unit of time for the discrete simulation algorithm provided in the original paper \cite{Li_2021}.
 
-Cutoffs \textit{CUT-OFF}, introduced in \cite{Li_2021} to optimize quantum repeater protocols, are also expressed in these discrete units.
+These are all \textit{heralded probabilistic} processes, i.e. they are successful with a certain probability, and the outcome (success or fail) will be classically communicated to the parties involved. If the process fails, all the links are lost and the protocol is restarted. Thus, all the PROTOCOL-UNITs involved in the protocol distributing entanglement have to succeed for the end-to-end link to be established. The waiting times to achieve each step are stacked on top of each other, leading to the total waiting time needed, which here we try to model as a random variable.
+
+Cutoffs \textit{CUT-OFF} are also considered in the paper, but are not under consideration in this work.
+They represent conditions imposed on the quality of the entanglement. If not met, the entanglement is discarded and the protocol is restarted.
+Since we do not focus on cutoffs, we will not discuss them further.
 
 
 \section{Heraldeld Entanglement Generation}\label{section:heralded_entanglement_generation}
@@ -64,22 +83,22 @@ The first step in the repeater chain protocol is the generation of elementary en
 In the following, we derive the waiting time and Werner parameter for the elementary entanglement generation protocol.
 
 \subsection{Waiting Time for Elementary Entanglement}
-In modeling the random variable $T_n$, which represents the waiting time in a $2^n$ segment repeater chain, we can reason by induction.
 
-The base case \textbf{$T_0$ is the waiting time for the generation of elementary entanglement}.
+With $T_0$ we denote the \textbf{waiting time for the generation of elementary entanglement}.
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.2\linewidth]{images/gen.png}
-    \caption{For two segments, $T_0$ represents the waiting time for the generation of a single link between two nodes without any intermediate repeater nodes. \cite{Li_2021}}
+    \caption{For two segments, $T_0$ represents the waiting time for the generation of a single link between two nodes without any intermediate repeater nodes \cite{Li_2021}.}
     \label{fig:gen}
 \end{figure}
 
-Since we model the generation of single-hop entanglement by attempts which succeed with a fixed probability $p_{\text{gen}}$, the waiting time $T_0$ is a discrete random variable (in units of $L_0 /c$) which follows a geometric distribution (see \ref{section:geometric_distribution}) with probability distribution given by 
+Since we model the generation of single-hop entanglement by attempts which \textbf{succeed with a fixed probability} $p_{\text{gen}}$, the waiting time $T_0$ is a discrete random variable (in units of $L_0 /c$) which follows a geometric distribution (see \ref{section:geometric_distribution}) with probability distribution given by 
 \begin{equation}
     \Pr(T_0 = t) = p_{\text{gen}} (1 - p_{\text{gen}})^{t-1} \quad \text{for} \quad t \in \{1, 2, 3, \ldots \}
 \end{equation}
-where $p_{\text{gen}}$ is the probability of success of the entanglement generation protocol.
+where $p_{\text{gen}}$ is a hardware parameter, i.e. depends on the quality of the physical devices used in the experiments.
+All the hardware parameters are an input for the model and the simulation algorithm.
 
 \subsection{Werner Parameter for Elementary Entanglement}\label{subsection:werner_parameter_gen}
 
@@ -130,8 +149,8 @@ The output state of the entanglement generation protocol is a Werner state with 
 
 \section{Entanglement Swapping}
 
-Once we have generated elementary entanglement, we can use it to \textbf{create entanglement over longer distances by entanglement swapping}.
-This UNIT-PROTOCOL takes in input two entangled pairs, say between nodes $A-B$ and $B-C$, and outputs a longer link $A-C$ of lower quality. 
+Once we have generated elementary entanglement, we can use it to \textbf{create entanglement over longer distances} by entanglement swapping.
+This UNIT-PROTOCOL takes in input two entangled pairs, say between nodes $A-B$ and $B-C$, and outputs a longer link $A-C$ \textbf{of reduced quality}. 
 
 \subsection{Waiting Time for Entanglement Swapping}
 
@@ -143,15 +162,15 @@ In order to perform the entanglement swap to produce a single $(2^n+1)$-hop link
 \begin{figure}[ht]
     \centering
     \includegraphics[width=\linewidth]{images/swap.png}
-    \caption{A link that spans $2^n$ segments is produced in a nested fashion, where at each nesting level two links are produced and subsequently swapped. \cite{Li_2021}}
+    \caption{A link that spans $2^n$ segments is produced in a nested fashion, where at each nesting level two links are produced and subsequently swapped \cite{Li_2021}.}
     \label{fig:entanglement_swapping}
 \end{figure}
 
-Denote the waiting time for the pairs by $T_n^{(A)}$ and $T_n^{(B)}$, both of which are i.i.d. with $T_n$, as they are copies of it (see Section \ref{paragraph:copies_of_a_random_variable}).
+We denote the waiting time for the two $(2^n)$-hop links to be ready for swapping by $T_n^{(A)}$ and $T_n^{(B)}$, i.i.d. copies of $T_n$ (see Section \ref{paragraph:copies_of_a_random_variable}).
 
 \subsubsection{Time until both pairs are available}
 
-We introduce a new random variable $M_n$ modeling the time until both pairs are available
+We introduce a new random variable $M_n$ modeling the time \textit{before} both pairs are available
 \begin{equation}\label{eq:waiting_time_pair}
     M_n := g_T(T_n^{(A)} , T_n^{(B)}) .
 \end{equation}
@@ -164,12 +183,19 @@ which is also \textbf{the time at which the entanglement swap is attempted}.
 
 Thus, $M_n$ represents the waiting time for a single attempt of entanglement swapping, and is distributed according to its PDF
 \begin{align}\label{eq:pdf_waiting_time_pair}
-    \Pr(M_n = t) &= \sum_{\substack{t_A, t_B: \\ t = \max(t_A, t_B)}} \Pr(T_n^{(A)} = t_A \text{ and } T_n^{(B)} = t_B) .
+    \Pr(M_n = t) &= \sum_{\substack{t_A, t_B: \\ t = \max(t_A, t_B) + \textcolor{blue}{t_c}}} \Pr(T_n^{(A)} = t_A \text{ and } T_n^{(B)} = t_B) .
 \end{align}
+Note that this is because \textbf{as soon as the two pairs are available}, the entanglement swap is attempted, thus the waiting time necessary is just the maximum of the two input links' waiting times.
 % Also, we can derive its CDF
 % \begin{equation}
 %     \Pr(M_n \leq t) = \Pr(T_n^{(A)} \leq t \text{ and } T_n^{(B)} \leq t) = \Pr(T_n \leq t) ^ 2 .
 % \end{equation}
+
+\paragraph{Classical Communication Time.}
+
+What denoted as $t_c$ is the time needed for classical communication and local operations, which is a fixed time that is added to the waiting time for the entanglement generation.
+
+In particular this is the time needed for the \textit{heralding signal}, i.e. the classical signal that is sent to the nodes to inform them that the entanglement is ready. This signal is sent as soon as the entanglement is generated, and the nodes need to wait for it to arrive before they can know the outcome of the process and proceed with the rest of the protocol.
 
 \subsubsection{Number of steps required}
 
@@ -177,7 +203,7 @@ We introduce now $K_n$, the random variable that models \textbf{the number of st
 \begin{equation}\label{eq:pdf_swap_steps}
     \Pr(K_n = k) = p_{swap} (1 - p_{swap})^{k-1}
 \end{equation}
-where $p_{swap}$ is the success probability of the entanglement swapping protocol, which is independent of the state of the two input links.
+where $p_{swap}$ is the success probability of the entanglement swapping, which is independent of the state of the two input links, i.e. is a constant hardware parameter for the model.
 
 \subsubsection{Derivation of $T_{n+1}$}
 The derivation of $T_{n+1}$ requires us to combine the random variable for the number of steps required $K_n$ and the random variable for the waiting time for one attempt $M_n$.
