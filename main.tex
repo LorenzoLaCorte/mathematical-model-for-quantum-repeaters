@@ -141,7 +141,7 @@ The output state of the entanglement generation protocol is a Werner state with 
 % \begin{figure}[ht]
 %     \centering
 %     \includegraphics[width=1\linewidth]{images/gen_example_20.png}
-%     \caption{CDF and PDF of the waiting time for the entanglement generation protocol, with $p_{gen} = 0.2$ (top) and $p_{gen} = 0.5$ (bottom).}
+%     \caption{CDF and PDF of the waiting time for the entanglement generation protocol, with $p_\text{gen} = 0.2$ (top) and $p_\text{gen} = 0.5$ (bottom).}
 %     \label{fig:entanglement_generation_example}
 % \end{figure}
 
@@ -166,16 +166,16 @@ In order to perform the entanglement swap to produce a single $(2^n+1)$-hop link
 
 We denote the waiting time for the two $(2^n)$-hop links to be ready for swapping by $T_n^{(A)}$ and $T_n^{(B)}$, i.i.d.\ copies of $T_n$ (see Section~\ref{paragraph:copies_of_a_random_variable}).
 
-\subsubsection{Time until both pairs are available}
+\subsubsection*{Time until both pairs are available}
 
 We introduce a new random variable $M_n$ modeling the time \textit{before} both pairs are available
 \begin{equation}\label{eq:waiting_time_pair}
-    M_n := g_T(T_n^{(A)} , T_n^{(B)}) .
+    M_n = g_T(T_n^{(A)} , T_n^{(B)}) .
 \end{equation}
 
 The function $g_T$ is generally defined as the maximum of the two waiting times
 \begin{equation}\label{eq:waiting_time_pair_max}
-    g_T(t_A, t_B) := \max(t_A, t_B).
+    g_T(t_A, t_B) = \max(t_A, t_B).
 \end{equation}
 which is also \textbf{the time at which the entanglement swap is attempted}. 
 
@@ -189,21 +189,21 @@ Note that this is because \textbf{as soon as the two pairs are available}, the e
 %     \Pr(M_n \leq t) = \Pr(T_n^{(A)} \leq t \text{ and } T_n^{(B)} \leq t) = \Pr(T_n \leq t) ^ 2 .
 % \end{equation}
 
-\paragraph{Classical Communication Time.}
+\paragraph*{Classical Communication Time.}
 
-What denoted as $t_c$ is the time needed for classical communication and local operations, which is a fixed time that is added to the waiting time for the entanglement generation.
+What denoted as $\textcolor{blue}{t_c}$ is the time needed for classical communication and local operations, which is a fixed time that is added to the waiting time for the entanglement generation.
 
 In particular this is the time needed for the \textit{heralding signal}, i.e.\ the classical signal that is sent to the nodes to inform them that the entanglement is ready. This signal is sent as soon as the entanglement is generated, and the nodes need to wait for it to arrive before they can know the outcome of the process and proceed with the rest of the protocol.
 
-\subsubsection{Number of steps required}
+\subsubsection*{Number of steps required}
 
 We introduce now $K_n$, the random variable that models \textbf{the number of steps $k$ until the first successful swap} at level $n$. It follows a \hyperref[subsection:geometric_pdf]{geometric distribution}
 \begin{equation}\label{eq:pdf_swap_steps}
-    \Pr(K_n = k) = p_{swap} {(1 - p_{swap})}^{k-1}
+    \Pr(K_n = k) = p_\text{swap} {(1 - p_\text{swap})}^{k-1}
 \end{equation}
-where $p_{swap}$ is the success probability of the entanglement swapping, which is independent of the state of the two input links, i.e.\ is a constant hardware parameter for the model.
+where $p_\text{swap}$ is the success probability of the entanglement swapping, which is independent of the state of the two input links, i.e.\ is a constant hardware parameter for the model.
 
-\subsubsection{Derivation of $T_{n+1}$}
+\subsubsection*{Derivation of $T_{n+1}$}
 The derivation of $T_{n+1}$ requires us to combine the random variable for the number of steps required $K_n$ and the random variable for the waiting time for one attempt $M_n$.
 
 In order to find the relation between $M_n$ and $T_{n+1}$, note that when entanglement swap fails, the two input are lost and need to be
@@ -216,7 +216,7 @@ Since the number of entanglement swaps $K_n$ is geometrically distributed, we sa
     T_{n+1}=\sum_{k=1}^{K_{n}} M_{n}^{(k)}
 \end{equation}
 
-\subsubsection{Derivation of the PDF of $T_{n+1}$}
+\subsubsection*{Derivation of the PDF of $T_{n+1}$}
 
 The probability distribution of the waiting time $T_{n+1}$
 \begin{align}
@@ -231,21 +231,21 @@ Plugging in the expressions for $\Pr(K_n = k)$ (Equation~\ref{eq:pdf_swap_steps}
 \end{equation}
 where, from Equation~\ref{eq:pdf_waiting_time_pair}
 \begin{equation}\label{eq:pdf_waiting_time_pair_convolution}
-    m(t) := \Pr(M = t) = \sum_{\substack{t_A, t_B: \\ t = \max(t_A, t_B) + t_c}} \Pr(T_n^{(A)} = t_A \text{ and } T_n^{(B)} = t_B) .
+    m(t) = \Pr(M = t) = \sum_{\substack{t_A, t_B: \\ t = \max(t_A, t_B) + t_c}} \Pr(T_n^{(A)} = t_A \text{ and } T_n^{(B)} = t_B) .
 \end{equation}
 
 \subsection{Werner Parameter for Entanglement Swapping}
 
-Considering two entangled pairs, respectively with Werner parameters $w_A$ and $w_B$, the output Werner parameter $w_{out}$, if we do not consider decoherence, will be % todo: for the thesis, cref werner parameter
+Considering two entangled pairs, respectively with Werner parameters $w_A$ and $w_B$, the output Werner parameter $W_{n+1}$, if we do not consider decoherence, will be % todo: for the thesis, cref werner parameter
 \begin{equation}
-    w_{out} = w_A \cdot w_B .
+    W_{n+1} = w_A \cdot w_B .
 \end{equation}
 
 However, when the first of the two pairs is generated, it has to wait for the elementary generation of the other; \textbf{during this time the first generated pair decoheres}. In particular, a Werner state $\rho(w)$ residing in memory for a time $\Delta(t)$ will transform into the Werner state $\rho(w_{decayed})$ with 
 \begin{equation}\label{eq:w_decayed}
-    w_{\text{decayed}} = w \cdot e^{-\Delta t / T_{coh}}
+    w_{\text{decayed}} = w \cdot e^{-\Delta t / t_\text{coh}}
 \end{equation}
-where $T_{coh}$ is the joint coherence time of the two quantum memories holding the qubits. % todo: for the thesis, refer to coherence time and q. memories
+where $t_\text{coh}$ is the joint coherence time of the two quantum memories holding the qubits. % todo: for the thesis, refer to coherence time and q. memories
 
 Denote by $A$ and $B$ the input links to the entanglement swap and denote by $\left(t_{A}, w_{A}\right)$ and $\left(t_{B}, w_{B}\right)$ their respective delivery times and Werner parameters. 
 % todo: add image
@@ -255,63 +255,63 @@ Link $A$ is produced last, so the entanglement swap will be performed directly a
 
 It follows that $B$'s Werner parameter decoheres accordingly to Equation (~\ref{eq:w_decayed}), and therefore is, immediately before the swap, equal to
 \begin{equation*}
-    w_{B}^{\prime} = w_{B} \cdot e^{-\left|t_{A}-t_{B}\right| / T_{coh}} .
+    w_{B}^{\prime} = w_{B} \cdot e^{-\left|t_{A}-t_{B}\right| / t_\text{coh}} .
 \end{equation*}
 
 Thus, the entanglement swap would produce the $2^{n+1}$-hop state with Werner parameter
 \begin{align}
-w_{out} &= w_{A} \cdot w_{B}^{\prime} \nonumber \\
-        &= w_{A} \cdot w_{B} \cdot e^{-\left|t_{A}-t_{B}\right| / T_{coh}} .
+W_{n+1} &= w_{A} \cdot w_{B}^{\prime} \nonumber \\
+        &= w_{A} \cdot w_{B} \cdot e^{-\left|t_{A}-t_{B}\right| / t_\text{coh}} .
 \end{align}
 
-Notice that choosing $t_{A} > t_{B}$ would have lead to the same result.
+Notice that choosing $t_{A} \leq t_{B}$ would have lead to the same result.
 % maybe todo (bit overwhelming): include figure 2 of Li paper
 
 \paragraph*{Induction.}
 
-In the \textbf{base case}, for a single segment ($n=0$), we are in the \hyperref[subsection:werner_parameter_gen]{(already discussed)} entanglement generation phase.
-Here, the \textbf{waiting time and Werner parameter are uncorrelated} because we model the attempts at generating single-hop entanglement to be independent and to each take equally long. 
+In the \textbf{base case} (entanglement generation), the \textbf{waiting time and Werner parameter are uncorrelated} because we model the attempts at generating single-hop entanglement to be independent and to each take equally long.
 
-At the \textbf{recursive step} $n$, we model at the same time the Werner Parameter and the Waiting Time as a joint random variable $(T_n, W_n)$.
+At the \textbf{recursive step}, we model at the same time the Werner Parameter and the Waiting Time as a joint random variable $(T_n, W_n)$.
 
-\paragraph*{Forgetting Sum.} To define it properly, we introduce the concept of \textit{forgetting sum} $\widehat{\sum}$, defined on sequences of tuples $\left\{\left(x_{j}, y_{j}\right) \mid 1 \leq j \leq m\right\}$ for some $m \in\{1,2, \ldots\}$ as
-\begin{equation}\label{eq:forgetting_sum}
-    \widehat{\sum}_{j=1}^{m}\left(x_{j}, y_{j}\right):=\left(\sum_{j=1}^{m} x_{j}, y_{m}\right)
-\end{equation}
+% \paragraph*{Forgetting Sum.} To define it properly, we introduce the concept of \textit{forgetting sum} $\widehat{\sum}$, defined on sequences of tuples $\left\{\left(x_{j}, y_{j}\right) \mid 1 \leq j \leq m\right\}$ for some $m \in\{1,2, \ldots\}$ as
+% \begin{equation}\label{eq:forgetting_sum}
+%     \widehat{\sum}_{j=1}^{m}\left(x_{j}, y_{j}\right)=\left(\sum_{j=1}^{m} x_{j}, y_{m}\right)
+% \end{equation}
 
-This notation is key to characterize the joint random variable $(T_{n+1}, W_{n+1})$, as the Werner parameter of the output link is only influenced by the links that the successful entanglement swap acted upon, as we will see in the following.
+% This notation is key to characterize the joint random variable $(T_{n+1}, W_{n+1})$, as the Werner parameter of the output link is only influenced by the links that the successful entanglement swap acted upon, as we will see in the following.
 
-Using this concept, we define the joint random variable $(T_{n+1}, W_{n+1})$ as
-\begin{equation}\label{eq:joint_random_variable}
-    (T_{n+1}, W_{n+1}) := \widehat{\sum}_{k=1}^{K_n} {(M_n, V_n)}^{(k)}.
-\end{equation}
+% Using this concept, we define the joint random variable $(T_{n+1}, W_{n+1})$ as
+% \begin{equation}\label{eq:joint_random_variable}
+%     (T_{n+1}, W_{n+1}) = \widehat{\sum}_{k=1}^{K_n} {(M_n, V_n)}^{(k)}.
+% \end{equation}
 
-Starting from the auxiliary variable for the output waiting time of a pair $M_n$ (Eq.~\ref{eq:waiting_time_pair}), we introduce another auxiliary random variable for the Werner parameter of the output link $V_n$, which will depend on the Werner parameters of the input links. 
+% Starting from the auxiliary variable for the output waiting time of a pair $M_n$ (Eq.~\ref{eq:waiting_time_pair}), we introduce another auxiliary random variable for the Werner parameter of the output link $V_n$, which will depend on the Werner parameters of the input links. 
 
-We define the auxiliary joint random variable $(M_n, V_n)$ as
-\begin{equation}
-    (M_n, V_n) := g\left((T_n, W_n)^{(A)}, (T_n, W_n)^{(B)}\right).
-\end{equation}
+% We define the auxiliary joint random variable $(M_n, V_n)$ as
+% \begin{equation}
+%     (M_n, V_n) = g\left((T_n, W_n)^{(A)}, (T_n, W_n)^{(B)}\right).
+% \end{equation}
 
-The function $g$ is given by
-\begin{equation}
-    g\left((t_A, w_A),(t_B, w_B)\right) := \left(g_T(t_A, t_B), g_W\left((t_A, w_A),(t_B, w_B)\right)\right)
-\end{equation}
-where $g_T$ is defined in Eq.~\ref{eq:waiting_time_pair_max} and
-\begin{equation}
-    g_W\left((t_A, w_A),(t_B, w_B)\right) := w_A \cdot w_B \cdot e^{-\left|t_{A}-t_{B}\right| / T_{coh}} .
-\end{equation}
-with $T_{\text{coh}}$ the quantum memory coherence time.
+% The function $g$ is given by
+% \begin{equation}
+%     g\left((t_A, w_A),(t_B, w_B)\right) = \left(g_T(t_A, t_B), g_W\left((t_A, w_A),(t_B, w_B)\right)\right)
+% \end{equation}
+% where $g_T$ is defined in Eq.~\ref{eq:waiting_time_pair_max} and
+% \begin{equation}
+%     g_W\left((t_A, w_A),(t_B, w_B)\right) = w_A \cdot w_B \cdot e^{-\left|t_{A}-t_{B}\right| / t_\text{coh}} .
+% \end{equation}
+% with $T_{\text{coh}}$ the quantum memory coherence time.
 
-We already studied the expression for the waiting time $T_{n+1}$. The other random variable $W_{n+1}$ directly derives from $V_{n}$, which expresses the Werner parameter of the produced $2^{n+1}$-hop link in case the swap is successful.
+% We already studied the expression for the waiting time $T_{n+1}$. The other random variable $W_{n+1}$ directly derives from $V_{n}$, which expresses the Werner parameter of the produced $2^{n+1}$-hop link in case the swap is successful.
 
-To prove that $V_{n}$ is formulated properly, we argue that $g_{W}$ correctly computes the Werner parameter of the output link after an entanglement swap.
+% To prove that $V_{n}$ is formulated properly, we argue that $g_{W}$ correctly computes the Werner parameter of the output link after an entanglement swap.
 
-The key idea that leads to the forgetting sum in Equation~\ref{eq:joint_random_variable} is the following: if the entanglement swap fails, then the $2^{n+1}$-hop link with its Werner parameter will never be produced since both initial $2^{n}$-hop entangled pairs are lost. Thus, \textbf{for the waiting time we should consider the sum of the waiting times of all the attempts, but for the Werner parameter we should only consider the last successful attempt}.
+The key idea 
+% that leads to the forgetting sum in Equation~\ref{eq:joint_random_variable} 
+is the following: if the entanglement swap fails, then the $2^{n+1}$-hop link with its Werner parameter will never be produced since both initial $2^{n}$-hop entangled pairs are lost. Thus, \textbf{for the waiting time we should consider the sum of the waiting times of all the attempts, but for the Werner parameter we should only consider the last successful attempt}.
 
 Let's explain it further.
-
-In order to find how the Werner parameter on level $n+1$ is expressed as a function of the waiting times and Werner parameters at level $n$. Consider a sequence $\left(m_{j}, v_{j}\right)$ of waiting times $m_{j}$ and Werner parameters $v_{j}$, where $j$ runs from 1 to the first successful swap $k$, with
+In order to find how the Werner parameter on level $n+1$ is expressed as a function of the waiting times and Werner parameters at level $n$, consider a sequence $\left(m_{j}, v_{j}\right)$ of waiting times $m_{j}$ and Werner parameters $v_{j}$, where $j$ runs from 1 to the first successful swap $k$, with
 \begin{itemize}
     \item $m_{j}$ representing the waiting time until the end of the entanglement swap that transforms two $2^{n}$-hop links into a single $2^{n+1}$-hop link,
     \item $v_{j}$ representing the output link's Werner parameter if the swap is successful. 
@@ -319,33 +319,33 @@ In order to find how the Werner parameter on level $n+1$ is expressed as a funct
 
 From previous results, we found that the total waiting time is given by $\sum_{j=1}^{k} m_{j}$, the sum of the successful one, the output link is the last produced link and therefore its Werner parameter equals $v_{k}$. 
 
-We thus find that the waiting time $t_{\text {final }}$ of the first $2^{n+1}$-hop link and its Werner parameter $w_{\text {final }}$ are given by:
+For this reason, the waiting time $t_{\text{out}}$ of the first $2^{n+1}$-hop link and its Werner parameter $w_{\text{out}}$ are given by:
 \begin{align}
-    t_{final} &= \sum_{j=1}^{k} m_{j} \\ 
-    w_{final} &= v_k 
+    t_\text{out} &= \sum_{j=1}^{k} m_{j} \\ 
+    w_\text{out} &= v_k 
 \end{align}
 or, in a more compact form
 \begin{equation}
-    \left(t_{final}, w_{final}\right) = \left(\sum_{j=1}^{k} m_{j}, v_{k}\right) .
+    \left(t_\text{out}, w_\text{out}\right) = \left(\sum_{j=1}^{k} m_{j}, v_{k}\right) .
 \end{equation}
 
-Taking into account that the number of swaps $k$ that need to be performed until the first successful one is an instance of the random variable $K_{n}$, we arrive at the full recursive expression for the waiting time and Werner parameter at level $n+1$ as given in Equation~\ref{eq:joint_random_variable}.
+\subsubsection*{Derivation of $W_{n+1}$}
 
-\subsubsection{Derivation of $W_{out}$}
-Let's now derive the expression for the Werner parameter of the output link $W_{out}$.
+Taking into account what stated above, we aim to derive the expression for the Werner parameter at level $n+1$. % as given in Equation~\ref{eq:joint_random_variable}.
 
 Let $W_{s}(t)$ be the \textbf{average Werner parameter} of the output link of \textbf{one attempt}, given that it succeeds and finishes at time $t$
 \begin{equation}
-    W_s(t) = \sum_{\substack{t_A, t_B:\\ t = \max(t_A, t_B)}} \Pr(T_A = t_A, T_B = t_B) \cdot [p_{swap} \cdot w_{\text{out}}](t_A, t_B)
+    W_s(t) = \sum_{\substack{t_A, t_B:\\ t = \max(t_A, t_B) + t_c}} \Pr(T_A = t_A, T_B = t_B) \cdot [p_\text{swap} \cdot w_{\text{out}}](t_A, t_B) .
 \end{equation}
 
-By taking Eq.~\ref{eq:joint_random_variable} and replacing the iteration over all pair of possible input Werner parameters for each $k$ by convolution we get
+The number of swaps $k$ that need to be performed until the first successful one is an instance of the random variable $K_{n}$.
+We thus iterate over all pair of possible input Werner parameters for each $k$ by convolution and get
 \begin{equation}\label{eq:werner_parameter_swap}
-    W_{out} = \sum_{k=1}^{\infty} p_{swap} {(1 - p_{swap})}^{k-1} \left[ \left( \ast_{j=1}^{k-1} m \right) \ast \left( m \cdot W_{s} \right) \right]
+    W_{n+1}(t) = \sum_{k=1}^{\infty} p_\text{swap} {(1 - p_\text{swap})}^{k-1} \left[ \left( \ast_{j=1}^{k-1} m \right) \ast \left( m \cdot W_{s} \right) \right]
 \end{equation}
 where $m$ is defined in Eq.~\ref{eq:pdf_waiting_time_pair_convolution}.
 
-$W_{out}$ represents the weighted average of the Werner parameter of the output link, over all possible sequences of failed attempts, followed by a successful one:
+$W_{n+1}$ represents the weighted average of the Werner parameter of the output link, over all possible sequences of failed attempts, followed by a successful one:
 \begin{itemize}
     \item all possible sequences of failed attempts are represented by the $k-1$ of $m$,
     \item the successful attempt is represented by the convolution of $m$ and $W_{s}$.
@@ -383,7 +383,7 @@ $W_{out}$ represents the weighted average of the Werner parameter of the output 
 %     \end{lstlisting}
 % \end{minipage}
 
-% The Figure~\ref{fig:swap} shows the CDF and PDF of the waiting time for the entanglement swapping protocol, with $p_{gen} = 0.2$, $p_{swap} = 0.2$, and $t_{trunc} = 8000$. 
+% The Figure~\ref{fig:swap} shows the CDF and PDF of the waiting time for the entanglement swapping protocol, with $p_\text{gen} = 0.2$, $p_\text{swap} = 0.2$, and $t_{trunc} = 8000$. 
 
 % The truncation approximated the distribution: the probability of waiting for more than 200 units of time is not considered. Thus, the plot only covers 98.57\% of the distribution. However, the initial bit of the Werner parameter curve is more visible using this truncation.
 
@@ -399,7 +399,7 @@ $W_{out}$ represents the weighted average of the Werner parameter of the output 
 % \begin{figure}[ht]
 %     \centering
 %     \includegraphics[width=1\linewidth]{images/swap_example_3000.png}
-%     \caption{CDF and PDF of the waiting time for the entanglement swapping protocol, with $p_{gen} = 0.2$, $p_{swap} = 0.2$, $w_0 = 0.99$ and $t_{trunc} = 8000$.}
+%     \caption{CDF and PDF of the waiting time for the entanglement swapping protocol, with $p_\text{gen} = 0.2$, $p_\text{swap} = 0.2$, $w_0 = 0.99$ and $t_{trunc} = 8000$.}
 %     \label{fig:swap}
 % \end{figure}
 
@@ -408,7 +408,7 @@ $W_{out}$ represents the weighted average of the Werner parameter of the output 
 % \begin{figure}[ht]
 %     \centering
 %     \includegraphics[width=1\linewidth]{images/swap_n3_comparison.png}
-%     \caption{CDF and PDF of the waiting time for the entanglement swapping protocol, with $p_{gen} = 0.2$, $p_{swap} = 0.2$, $t_{trunc} = 8000$, and $w_0 = 0.99$ (left) and $w_0 = 0.9$ (right).}
+%     \caption{CDF and PDF of the waiting time for the entanglement swapping protocol, with $p_\text{gen} = 0.2$, $p_\text{swap} = 0.2$, $t_{trunc} = 8000$, and $w_0 = 0.99$ (left) and $w_0 = 0.9$ (right).}
 %     \label{fig:swap_comparison}
 % \end{figure}
 
@@ -421,9 +421,9 @@ $W_{out}$ represents the weighted average of the Werner parameter of the output 
 
 Entanglement distillation takes in input two low-quality entangled pairs and produces a single high-quality one.
 % todo: add image
-For entanglement distillation, the success probability $p_{dist}$ depends on the Werner parameters of the input links $A$ and $B$; in particular
+For entanglement distillation, the success probability $p_\text{dist}$ depends on the Werner parameters of the input links $A$ and $B$; in particular
 \begin{equation}
-    p_{dist} = \cfrac{1+w_A'w_B'}{2}
+    p_\text{dist} = \cfrac{1+w_A'w_B'}{2}
 \end{equation}
 where the primed notation denotes the Werner parameter of the entanglement pair decohered for a time $\Delta t$, as in Equation~\ref{eq:w_decayed}.
 
@@ -433,7 +433,7 @@ To make this correlation between $K$ and $M$ explicit, we introduce a binary ran
 We \textbf{separate the expressions} for the waiting time probability distribution of a successful and failed attempt, respectively $P_s(t)$ and $P_f(t)$.
 These are computed by iterating over all possible combinations of the input links' generation time $t_A$, $t_B$ that lead to a waiting time $t$ for this attempt.
 
-We then express the total waiting time distribution $T_{out}$ and the Werner parameter $W_{out}$ as those of the successful attempt averaged by the occurrence probability of all possible sequences of failed attempts, where the weighted average is efficiently computed using convolution (see Equation~\ref{eq:convolution}).
+We then express the total waiting time distribution $T_\text{out}$ and the Werner parameter $W_{n+1}$ as those of the successful attempt averaged by the occurrence probability of all possible sequences of failed attempts, where the weighted average is efficiently computed using convolution (see Equation~\ref{eq:convolution}).
 
 \subsection{Waiting Time for Entanglement Distillation}
 
@@ -443,14 +443,14 @@ To compute he waiting time distribution we consider the generation time of a suc
 
 We define the joint distribution that \textbf{one attempt} succeeds or fails and takes time $t$ respectively as
 \begin{align}\label{eq:waiting_time_success_failure}
-    P_s(t) &:= \Pr(M = t, Y = 1) = \sum_{\substack{t_A, t_B : \\ t = \max(t_A, t_B) + t_c}} \Pr(T_A = t_A, T_B = t_B) \cdot p(t_A, t_B) \\
-    P_f(t) &:= \Pr(M = t, Y = 0) = \sum_{\substack{t_A, t_B : \\ t = \max(t_A, t_B) + t_c}} \Pr(T_A = t_A, T_B = t_B) \cdot [1 - p(t_A, t_B)]
+    P_s(t) &= \Pr(M = t, Y = 1) = \sum_{\substack{t_A, t_B : \\ t = \max(t_A, t_B) + t_c}} \Pr(T_A = t_A, T_B = t_B) \cdot p(t_A, t_B) \\
+    P_f(t) &= \Pr(M = t, Y = 0) = \sum_{\substack{t_A, t_B : \\ t = \max(t_A, t_B) + t_c}} \Pr(T_A = t_A, T_B = t_B) \cdot [1 - p(t_A, t_B)]
 \end{align}
 where $t_c$ is the time used for classical communication and local operation. Here, we iterated over all possible combinations of the input links' generation time $t_A$, $t_B$ that leads to a waiting time $t$ for this attempt.
 
 The sum of the waiting time for \textbf{all attempts} can be obtained by
 \begin{align}\label{eq:waiting_time_distillation}
-    \Pr(T_{out} = t) = \sum_{k=1}^{\infty} \left[ \left( \ast_{j=1}^{k-1} P_f \right) \ast P_s \right]
+    \Pr(T_\text{out} = t) = \sum_{k=1}^{\infty} \left[ \left( \ast_{j=1}^{k-1} P_f \right) \ast P_s \right]
 \end{align}
 where the sum over $k$ considers all the possible numbers of attempts, convoluting, for each case, $k-1$ unsuccessful attempts and one successful one.
 
@@ -464,7 +464,7 @@ The convolution here cannot be simply interpreted as a sum of two random variabl
 To summarize, the full computation goes as follows:
 \begin{enumerate}
     \item we compute $P_f$ and $P_s$: the joint distribution that one attempt succeeds or fails and takes time $t$.
-    \item once these are computed, we can compute $T_{out}$ and $W_{out}$ as convolutions of $k-1$ unsuccessful attempts and one successful one, summing over all possible numbers of attempts $k$.
+    \item once these are computed, we can compute $T_\text{out}$ and $W_{n+1}$ as convolutions of $k-1$ unsuccessful attempts and one successful one, summing over all possible numbers of attempts $k$.
 \end{enumerate}
 
 \subsection{Werner Parameter for Entanglement Distillation}
@@ -474,13 +474,13 @@ We compute $W(t)$, the average Werner parameter, to reduce the dependence on Wer
 
 First, we compute it for a \textbf{single attempt}, given that entanglement distillation succeeds and finishes at time $t$
 \begin{equation}
-    W_s(t) = \frac{\sum_{\substack{t_A, t_B : \\ t = \max(t_A, t_B) + t_c}} \Pr(T_A = t_A, T_B = t_B) \cdot [p_{dist} \cdot w_{\text{out}}](t_A, t_B)}{P_s(t)}.
+    W_s(t) = \frac{\sum_{\substack{t_A, t_B : \\ t = \max(t_A, t_B) + t_c}} \Pr(T_A = t_A, T_B = t_B) \cdot [p_\text{dist} \cdot w_{\text{out}}](t_A, t_B)}{P_s(t)}.
 \end{equation}
-where $w_{out}$ is the Werner parameter of the output link if the distillation attempt \textbf{was successful}.
+where $W_{n+1}$ is the Werner parameter of the output link if the distillation attempt \textbf{was successful}.
 
 Next, we take a weighted average of $W_s$ over all possible sequences of failed attempts, followed by a single successful attempt:
 \begin{equation}\label{eq:werner_parameter_distillation}
-    W_{out} = \frac{\sum_{k=1}^{\infty} \left[ \left( \ast_{j=1}^{k-1} P_f^{(j)} \right) \ast (P_s \cdot W_s) \right] (t)}{\Pr(T_{out} = t)}.
+    W_{n+1} = \frac{\sum_{k=1}^{\infty} \left[ \left( \ast_{j=1}^{k-1} P_f^{(j)} \right) \ast (P_s \cdot W_s) \right] (t)}{\Pr(T_\text{out} = t)}.
 \end{equation}
 
 This give us the Werner parameter of the output link.
@@ -520,8 +520,8 @@ This give us the Werner parameter of the output link.
 
 % It is also interesting to notice that not always the distillation brings to higher values for the Werner parameter, like in this case.
 
-% In particular, the outcome of the Werner parameter depends on the quality of the input links, the times of their generation, and the time of decoherence $t_{coh}$. 
-% In the Figure~\ref{fig:mixed_protocol_dist_comparison} we only consider the steps before and after distillation, presented as the second and third row in Figure~\ref{fig:mixed_protocol}. We fix all the parameters except for the time of decoherence, that takes values $t_{coh} = {400, 1600}$.
+% In particular, the outcome of the Werner parameter depends on the quality of the input links, the times of their generation, and the time of decoherence $t_\text{coh}$. 
+% In the Figure~\ref{fig:mixed_protocol_dist_comparison} we only consider the steps before and after distillation, presented as the second and third row in Figure~\ref{fig:mixed_protocol}. We fix all the parameters except for the time of decoherence, that takes values $t_\text{coh} = {400, 1600}$.
 
 % \begin{figure}[ht]
 %     \centering
@@ -538,7 +538,7 @@ This give us the Werner parameter of the output link.
 
 % The \textit{cutoff} operation selects the input links and accepts them if the cutoff condition is fulfilled. 
 
-% We define cutoffs condition and corresponding success probabilities $p_{\text{cut}}$ and Werner parameters $w_{out}$ in Table ??.
+% We define cutoffs condition and corresponding success probabilities $p_{\text{cut}}$ and Werner parameters $W_{n+1}$ in Table ??.
 % % todo: add table usign ai to convert image in latex
 
 % % Cutoffs are conditions imposed on the pair generated through \hyperref[section:heralded_entanglement_generation]{entanglement generation}. % is this true?
@@ -579,7 +579,7 @@ This give us the Werner parameter of the output link.
 
 % \paragraph*{Separating Successful and Failure Attempts}
 
-% To calculate $\Pr(T_{out} = t)$, we need three joint distributions
+% To calculate $\Pr(T_\text{out} = t)$, we need three joint distributions
 % \begin{enumerate}
 %     \item $P_f^{\prime}$ for unsuccessful input link preparation because of the cutoff,
 %     \item $P_{s, f}^{\prime}$ for successful preparation but unsuccessful swap/distillation,
@@ -728,7 +728,7 @@ Finally, applying the inverse Fourier transform \(\mathcal{F}^{-1}\), we obtain:
 
 The transformation of Equation~\ref{eq:werner_parameter_distillation} to Fourier space involves the same concepts and yields
 \begin{equation}\label{eq:werner_parameter_distillation_fourier}
-    W_{\text{out}} = \mathcal{F}^{-1} \left[ \frac{\mathcal{F}[P_s \cdot W_s]}{1 - \mathcal{F}[P_f]} \right] \frac{1}{\Pr(T_{out}=t)}(t) .
+    W_{n+1} = \mathcal{F}^{-1} \left[ \frac{\mathcal{F}[P_s \cdot W_s]}{1 - \mathcal{F}[P_f]} \right] \frac{1}{\Pr(T_\text{out}=t)}(t) .
 \end{equation}
 
 Again, the convolution has become a productory of identical copies of the same random variable; the resulting term, exponentiated to $k-1$, is then transformed through geometric series, yielding the final expression.
@@ -736,13 +736,13 @@ Again, the convolution has become a productory of identical copies of the same r
 \subsection{Entanglement Swapping in the Fourier Domain}
 
 Equations~\ref{eq:waiting_time_swap} and~\ref{eq:werner_parameter_swap} can also be moved to the Fourier space as follows.
-Both expressions can be written in Fourier space by substituting $P_s = p_{swap} \cdot m(t)$ and $P_f = (1 - p_{swap}) \cdot m(t)$ in the Equations for entanglement distillation~\ref{eq:waiting_time_distillation_fourier} and~\ref{eq:werner_parameter_distillation_fourier}, yielding
+Both expressions can be written in Fourier space by substituting $P_s = p_\text{swap} \cdot m(t)$ and $P_f = (1 - p_\text{swap}) \cdot m(t)$ in the Equations for entanglement distillation~\ref{eq:waiting_time_distillation_fourier} and~\ref{eq:werner_parameter_distillation_fourier}, yielding
 \begin{equation}
-    \Pr(T_{\text{out}} = t) = \mathcal{F}^{-1} \left[ \frac{\mathcal{F}[p_{swap} \cdot m(t)]}{1 - \mathcal{F}[(1 - p_{swap}) \cdot m(t)]} \right](t)
+    \Pr(T_{\text{out}} = t) = \mathcal{F}^{-1} \left[ \frac{\mathcal{F}[p_\text{swap} \cdot m(t)]}{1 - \mathcal{F}[(1 - p_\text{swap}) \cdot m(t)]} \right](t)
 \end{equation}
 and
 \begin{equation}
-    W_{\text{out}} = \mathcal{F}^{-1} \left[ \frac{\mathcal{F}[p_{swap} \cdot m(t) \cdot W_s]}{1 - \mathcal{F}[(1 - p_{swap}) \cdot m(t)]} \right] \frac{1}{\Pr(T_{out}=t)}(t)
+    W_{n+1} = \mathcal{F}^{-1} \left[ \frac{\mathcal{F}[p_\text{swap} \cdot m(t) \cdot W_s]}{1 - \mathcal{F}[(1 - p_\text{swap}) \cdot m(t)]} \right] \frac{1}{\Pr(T_\text{out}=t)}(t)
 \end{equation}
 where $m$ is defined in Equation~\ref{eq:pdf_waiting_time_pair_convolution}.
 
@@ -854,13 +854,13 @@ and can equivalently be computed as
 If $f$ is a function which takes two nonnegative integers as input, then the random variable $f(X, Y)$ has probability distribution function defined as
 
 \begin{equation}
-    \Pr(f(X, Y) = z) := \sum_{\substack{x=0, y=0 \\ f(x,y)=z}}^{\infty} \Pr(X = x \text{ and } Y = y).
+    \Pr(f(X, Y) = z) = \sum_{\substack{x=0, y=0 \\ f(x,y)=z}}^{\infty} \Pr(X = x \text{ and } Y = y).
 \end{equation}
 
 \subsection*{Sum of Random Variables}\label{paragraph:sum_of_random_variables}
 An example of such a function is addition. 
 
-Define $Z := X+Y$ where $X$ and $Y$ are independent, then the probability distribution $p_Z$ of $Z$ is given by 
+Define $Z = X+Y$ where $X$ and $Y$ are independent, then the probability distribution $p_Z$ of $Z$ is given by 
 \begin{equation}
     p_Z(z) = \Pr(Z = z) = \sum_{\substack{x=0, y=0 \\ x+y=z}}^{\infty} \Pr(X = x \text{ and } Y = y).
 \end{equation}
@@ -922,7 +922,7 @@ This appendix contains a numerical example of the protocols described. We consid
     \item the probability of success for entanglement swapping is $p_{\text{dist}} = 0.5$,
     \item the initial Werner parameter of the generated links is $w_{\text{gen}} = 0.9$,
 \end{itemize}
-and assume that the system is not subjected to decoherence ($t_{coh} = \infty$).
+and assume that the system is not subjected to decoherence ($t_\text{coh} = \infty$).
 
 \section{Entanglement Generation}
 
@@ -930,7 +930,7 @@ The probability distribution of the waiting time for entanglement generation is 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=1\linewidth]{images/dist_tests/only generation.png}
-    \caption{Plots for entanglement generation. The PMF is a geometric distribution governed by $p_{gen} = 0.5$; for such high value, the CDF reaches a value close to 1 in few time steps. The Werner parameter is costant.}
+    \caption{Plots for entanglement generation. The PMF is a geometric distribution governed by $p_\text{gen} = 0.5$; for such high value, the CDF reaches a value close to 1 in few time steps. The Werner parameter is costant.}
     \label{fig:gen_waiting_time}
 \end{figure}
 
@@ -955,7 +955,7 @@ In the table below, we show the probability distribution of the waiting time for
     \label{tab:gen_waiting_time}
 \end{equation*}
 
-In this particular example, as $p_{gen} = (1 - p_{gen}) = 0.5$, The probability of achieving a link at time $t = i$ is $(0.5)^i$.
+In this particular example, as $p_\text{gen} = (1 - p_\text{gen}) = 0.5$, The probability of achieving a link at time $t = i$ is $(0.5)^i$.
 
 For entanglement generation, for all $t$, the average Werner parameter is the constant $w_0 = 0.9$. As a matter of fact, indipendently from the number of attempts needed to achieve a link, its quality will always be the same.
 
