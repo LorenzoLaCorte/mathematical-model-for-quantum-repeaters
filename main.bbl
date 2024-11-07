@@ -19,6 +19,112 @@
 
 \refsection{0}
   \datalist[entry]{ynt/global//global/global}
+    \entry{bennett1996purification}{article}{}
+      \name{author}{6}{}{%
+        {{hash=9e07e222475916c813dd37c28db7c325}{%
+           family={Bennett},
+           familyi={B\bibinitperiod},
+           given={Charles\bibnamedelima H},
+           giveni={C\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
+        {{hash=504bb784f2241f359d5030d2ca7f2bdd}{%
+           family={Brassard},
+           familyi={B\bibinitperiod},
+           given={Gilles},
+           giveni={G\bibinitperiod}}}%
+        {{hash=7e3d741bd6b9b760e9ff6df26cf0f263}{%
+           family={Popescu},
+           familyi={P\bibinitperiod},
+           given={Sandu},
+           giveni={S\bibinitperiod}}}%
+        {{hash=18afc3425672102a53186459134d89fc}{%
+           family={Schumacher},
+           familyi={S\bibinitperiod},
+           given={Benjamin},
+           giveni={B\bibinitperiod}}}%
+        {{hash=5509489ab50cd678d68437275b870be5}{%
+           family={Smolin},
+           familyi={S\bibinitperiod},
+           given={John\bibnamedelima A},
+           giveni={J\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+        {{hash=db3a2ac4bb7edc871a862059726651fe}{%
+           family={Wootters},
+           familyi={W\bibinitperiod},
+           given={William\bibnamedelima K},
+           giveni={W\bibinitperiod\bibinitdelim K\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {APS}%
+      }
+      \strng{namehash}{e54e4559135d21380be766731de8c597}
+      \strng{fullhash}{9e1249dc6de2538f9a15c454b138ea56}
+      \strng{bibnamehash}{e54e4559135d21380be766731de8c597}
+      \strng{authorbibnamehash}{e54e4559135d21380be766731de8c597}
+      \strng{authornamehash}{e54e4559135d21380be766731de8c597}
+      \strng{authorfullhash}{9e1249dc6de2538f9a15c454b138ea56}
+      \field{labelalpha}{Ben+96}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Physical review letters}
+      \field{number}{5}
+      \field{title}{Purification of noisy entanglement and faithful teleportation via noisy channels}
+      \field{volume}{76}
+      \field{year}{1996}
+      \field{pages}{722}
+      \range{pages}{1}
+    \endentry
+    \entry{Brand_2020}{article}{}
+      \name{author}{3}{}{%
+        {{hash=f09b2b6595ff83b5ef06fb005e77a0ad}{%
+           family={Brand},
+           familyi={B\bibinitperiod},
+           given={Sebastiaan},
+           giveni={S\bibinitperiod}}}%
+        {{hash=d1d072d2df4f0dbeb6c0a010cf3f233a}{%
+           family={Coopmans},
+           familyi={C\bibinitperiod},
+           given={Tim},
+           giveni={T\bibinitperiod}}}%
+        {{hash=131f909f610b4176d0c0079a6ac352a2}{%
+           family={Elkouss},
+           familyi={E\bibinitperiod},
+           given={David},
+           giveni={D\bibinitperiod}}}%
+      }
+      \list{publisher}{2}{%
+        {Institute of Electrical}%
+        {Electronics Engineers (IEEE)}%
+      }
+      \strng{namehash}{5a02efae36218dc1598beb1d5669bb15}
+      \strng{fullhash}{5a02efae36218dc1598beb1d5669bb15}
+      \strng{bibnamehash}{5a02efae36218dc1598beb1d5669bb15}
+      \strng{authorbibnamehash}{5a02efae36218dc1598beb1d5669bb15}
+      \strng{authornamehash}{5a02efae36218dc1598beb1d5669bb15}
+      \strng{authorfullhash}{5a02efae36218dc1598beb1d5669bb15}
+      \field{labelalpha}{BCE20}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{1558-0008}
+      \field{journaltitle}{IEEE Journal on Selected Areas in Communications}
+      \field{number}{3}
+      \field{title}{Efficient Computation of the Waiting Time and Fidelity in Quantum Repeater Chains}
+      \field{volume}{38}
+      \field{year}{2020}
+      \field{pages}{619\bibrangedash 639}
+      \range{pages}{21}
+      \verb{doi}
+      \verb 10.1109/jsac.2020.2969037
+      \endverb
+      \verb{urlraw}
+      \verb http://dx.doi.org/10.1109/JSAC.2020.2969037
+      \endverb
+      \verb{url}
+      \verb http://dx.doi.org/10.1109/JSAC.2020.2969037
+      \endverb
+    \endentry
     \entry{Kuzmin_2021}{article}{}
       \name{author}{2}{}{%
         {{hash=24ec58d54c93a3dead3c7ddc23eb7d27}{%
