@@ -497,7 +497,10 @@ Next, we take a weighted average of $W_s$ over all possible sequences of failed 
 
 This give us the Werner parameter of the output end-to-end link.
 
-% \paragraph*{An important remark.} From the expressions we derived for the waiting time and the Werner parameter, derived by the separate expressions for the successful and failed attempts, we can also derive, in an alternative way, the expressions for the Werner parameter and the waiting time for entanglement swapping (Equations~\ref{eq:waiting_time_swap} and~\ref{eq:werner_parameter_swap})
+\paragraph*{An important remark.} \textcite{Li_2021} achieves a more complex model with respect to \textcite{Brand_2020} through the technique of separating the expressions for a success and a failure. Thus, the \textit{more general} model in~\cite{Li_2021} can be also used to derive, in an alternative way, the expressions for the Werner parameter and the waiting time for entanglement swapping (Equations~\ref{eq:waiting_time_swap} and~\ref{eq:werner_parameter_swap}).
+As a matter of fact, the model in~\cite{Li_2021} uses Equations~\ref{eq:waiting_time_distillation} and~\ref{eq:werner_parameter_distillation} for both entanglement distillation and entanglement swapping, simply plugging the corresponding success probability $p_\text{swap}$ or $p_\text{dist}$, and Werner parameter $w_\text{swap}$ or $w_\text{dist}$.
+
+In the following, when converting these equations in the Fourier space, we will use the more general model from~\cite{Li_2021}, and thus we will not need to distinguish between the two protocols.
 
 % TODO: consider including this in the Appendix
 % \subsection{Numerical Examples}
@@ -691,26 +694,27 @@ The Fourier transform acts on a finite sequence of numbers, which corresponds to
 
 % The FFT and its inverse (IFFT) are constrained by the requirement that the input sequence length be a power of two for optimal performance, although modern implementations, such as those in the NumPy library (used in {Li_2021}), can handle arbitrary lengths with some efficiency trade-offs.
 
-\subsection{Waiting Time Distribution for Entanglement Distillation}
+\subsection{Waiting Time}
 
-Since the discrete Fourier transform acts on a finite sequence of numbers we first truncate the probability distribution at a fixed time $L$.
+Since the discrete Fourier transform acts on a finite sequence of numbers we first truncate the probability distribution at a fixed time.
 
 The Fourier transform is a linear map, converting convolutions into element-wise multiplication. As a consequence, taking the Fourier transform of both sides of Equation~\ref{eq:waiting_time_distillation}, and then taking the inverse Fourier transform, yields
 \begin{equation}\label{eq:waiting_time_distillation_fourier}
-    \Pr(T_{n+1} = t) = \mathcal{F}^{-1} \left[ \frac{\mathcal{F}[P_s]}{1 - \mathcal{F}[P_f]} \right](t)
+    \Pr(T_{n+1} = t) = \mathcal{F}^{-1} \left[ \frac{\mathcal{F}[P_s]}{1 - \mathcal{F}[P_f]} \right](t) ,
 \end{equation}
-which is a more elegant and efficient way to compute the waiting time distribution.
+a more elegant and efficient way to compute the waiting time distribution.
+In the following, we describe in more details how this is achieved.
 
 \paragraph*{Full Derivation.}
 
-The probability distribution of the total waiting time \( T_{n+1} \) for all attempts is given by Equation~\ref{eq:waiting_time_distillation}, which we restate here for convenience:
+We start from Equation~\ref{eq:waiting_time_distillation}, the probability distribution of the total waiting time \( T_{n+1} \) for all attempts, which we restate here for convenience:
 \begin{equation}
     \Pr(T_{n+1} = t) = \sum_{k=1}^{\infty} \left[ \left(\ast_{j=1}^{k-1} P_f^{(j)} \right) \ast P_s \right](t) .
 \end{equation}
 
 Applying the Fourier transform \(\mathcal{F}\) to both sides, we get:
 \begin{equation}
-    \mathcal{F}[\Pr(T_{n+1} = t)] = \sum_{k=1}^{\infty} \left[ \left(\prod_{j=1}^{k-1} \mathcal{F}[P_f^{(j)}] \right) \cdot \mathcal{F}[P_s] \right](t)
+    \mathcal{F}[\Pr(T_{n+1} = t)] = \sum_{k=1}^{\infty} \left[ \left(\prod_{j=1}^{k-1} \mathcal{F}[P_f^{(j)}] \right) \cdot \mathcal{F}[P_s] \right](t) .
 \end{equation}
 
 For $k$ attempts, the productory \(\prod_{j=1}^{k-1} \mathcal{F}[P_f^{(j)}]\) represents the convolution of the failure distributions in the Fourier domain. From the assumption made, these distributions \( P_f^{(j)} \) are identical copies (see Appendix~\ref{paragraph:copies_of_a_random_variable}), so:
@@ -722,7 +726,7 @@ which means that the equation simplifies to
     \mathcal{F}[\Pr(T_{n+1} = t)] = \sum_{k=1}^{\infty} \left( \left( \mathcal{F}[P_f] \right)^{k-1} \cdot \mathcal{F}[P_s] \right) .
 \end{equation}
 
-Using the identity for the sum of a geometric series \(\sum_{k=1}^{\infty} x^{k-1} = \frac{1}{1-x}\), we can state that
+Using the \textbf{identity for the sum of a geometric series} \(\sum_{k=1}^{\infty} x^{k-1} = \frac{1}{1-x}\), we can state that
 \begin{equation}
     \sum_{k=1}^{\infty} \left( \mathcal{F}[P_f] \right)^{k-1} = \frac{1}{1 - \mathcal{F}[P_f]}
 \end{equation}
@@ -736,7 +740,7 @@ Finally, applying the inverse Fourier transform \(\mathcal{F}^{-1}\), we obtain:
     \Pr(T_{n+1} = t) = \mathcal{F}^{-1} \left[ \frac{\mathcal{F}[P_s]}{1 - \mathcal{F}[P_f]} \right](t)
 \end{equation}
 
-\subsection{Werner Parameter for Entanglement Distillation}
+\subsection{Werner Parameter}
 
 The transformation of Equation~\ref{eq:werner_parameter_distillation} to Fourier space involves the same concepts and yields
 \begin{equation}\label{eq:werner_parameter_distillation_fourier}
@@ -745,18 +749,18 @@ The transformation of Equation~\ref{eq:werner_parameter_distillation} to Fourier
 
 Again, the convolution has become a productory of identical copies of the same random variable; the resulting term, exponentiated to $(k-1)$, is then transformed through geometric series, yielding the final expression.
 
-\subsection{Entanglement Swapping in the Fourier Domain}
+% \subsection{Entanglement Swapping in the Fourier Domain}
 
-Equations~\ref{eq:waiting_time_swap} and~\ref{eq:werner_parameter_swap} can also be moved to the Fourier space as follows.
-Both expressions can be written in Fourier space by substituting $P_s = p_\text{swap} \cdot m(t)$ and $P_f = (1 - p_\text{swap}) \cdot m(t)$ in the Equations for entanglement distillation~\ref{eq:waiting_time_distillation_fourier} and~\ref{eq:werner_parameter_distillation_fourier}, yielding
-\begin{equation}
-    \Pr(T_{n+1} = t) = \mathcal{F}^{-1} \left[ \frac{\mathcal{F}[p_\text{swap} \cdot m(t)]}{1 - \mathcal{F}[(1 - p_\text{swap}) \cdot m(t)]} \right](t)
-\end{equation}
-and
-\begin{equation}
-    W_{n+1} = \mathcal{F}^{-1} \left[ \frac{\mathcal{F}[p_\text{swap} \cdot m(t) \cdot W_s]}{1 - \mathcal{F}[(1 - p_\text{swap}) \cdot m(t)]} \right] \frac{1}{\Pr(T_{n+1}=t)}(t)
-\end{equation}
-where $m$ is defined in Equation~\ref{eq:pdf_waiting_time_pair_convolution}.
+% Equations~\ref{eq:waiting_time_swap} and~\ref{eq:werner_parameter_swap} can also be moved to the Fourier space as follows.
+% Both expressions can be written in Fourier space by substituting $P_s = p_\text{swap} \cdot m(t)$ and $P_f = (1 - p_\text{swap}) \cdot m(t)$ in the Equations for entanglement distillation~\ref{eq:waiting_time_distillation_fourier} and~\ref{eq:werner_parameter_distillation_fourier}, yielding
+% \begin{equation}
+%     \Pr(T_{n+1} = t) = \mathcal{F}^{-1} \left[ \frac{\mathcal{F}[p_\text{swap} \cdot m(t)]}{1 - \mathcal{F}[(1 - p_\text{swap}) \cdot m(t)]} \right](t)
+% \end{equation}
+% and
+% \begin{equation}
+%     W_{n+1} = \mathcal{F}^{-1} \left[ \frac{\mathcal{F}[p_\text{swap} \cdot m(t) \cdot W_s]}{1 - \mathcal{F}[(1 - p_\text{swap}) \cdot m(t)]} \right] \frac{1}{\Pr(T_{n+1}=t)}(t)
+% \end{equation}
+% where $m$ is defined in Equation~\ref{eq:pdf_waiting_time_pair_convolution}.
 
 \appendix
 
@@ -848,7 +852,7 @@ Two random variables $X$ and $Y$ are independent if
 \end{equation}
 for all $x$ and $y$ in the domain.
 
-\paragraph{Copies of a Random Variable}\label{paragraph:copies_of_a_random_variable} By a \textit{copy} of $X$, we mean a fresh random variable which is independent from $X$ and identically distributed (i.i.d.).
+\subsection*{Copies of a Random Variable}\label{paragraph:copies_of_a_random_variable} By a \textit{copy} of $X$, we mean a fresh random variable which is independent from $X$ and identically distributed (i.i.d.).
 We will denote a copy by a superscript in parentheses. For example, $X^{(1)}$, $X^{(142)}$ and $X^{(A)}$ are all copies of $X$.
 
 \subsection*{Expected Value}

@@ -11,13 +11,11 @@
 \contentsline {subsection}{\numberline {1.4.1}Waiting Time for Entanglement Distillation}{12}{subsection.1.4.1}%
 \contentsline {subsection}{\numberline {1.4.2}Werner Parameter for Entanglement Distillation}{14}{subsection.1.4.2}%
 \contentsline {section}{\numberline {1.5}Closed Expressions in the Fourier Domain}{14}{section.1.5}%
-\contentsline {subsection}{\numberline {1.5.1}Waiting Time Distribution for Entanglement Distillation}{15}{subsection.1.5.1}%
-\contentsline {subsection}{\numberline {1.5.2}Werner Parameter for Entanglement Distillation}{16}{subsection.1.5.2}%
-\contentsline {subsection}{\numberline {1.5.3}Entanglement Swapping in the Fourier Domain}{16}{subsection.1.5.3}%
+\contentsline {subsection}{\numberline {1.5.1}Waiting Time}{15}{subsection.1.5.1}%
+\contentsline {subsection}{\numberline {1.5.2}Werner Parameter}{16}{subsection.1.5.2}%
 \contentsline {chapter}{Appendix\ \numberline {A}Mathematical Background}{17}{appendix.A}%
 \contentsline {section}{\numberline {A.1}Convolution}{17}{section.A.1}%
 \contentsline {section}{\numberline {A.2}Random Variables}{18}{section.A.2}%
-\contentsline {paragraph}{\numberline {A.2.0.0.1}Copies of a Random Variable}{19}{paragraph.A.2.0.0.1}%
 \contentsline {section}{\numberline {A.3}Geometric Distribution}{21}{section.A.3}%
 \contentsline {subsection}{\numberline {A.3.1}Probability Distribution Function (PDF)}{21}{subsection.A.3.1}%
 \contentsline {subsection}{\numberline {A.3.2}Cumulative Distribution Function (CDF)}{21}{subsection.A.3.2}%

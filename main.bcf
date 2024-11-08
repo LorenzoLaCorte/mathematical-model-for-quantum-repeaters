@@ -2356,7 +2356,14 @@
     <bcf:citekey order="5" intorder="1">Li_2021</bcf:citekey>
     <bcf:citekey order="6" intorder="1">bennett1996purification</bcf:citekey>
     <bcf:citekey order="7" intorder="1">bennett1996purification</bcf:citekey>
-    <bcf:citekey order="8" intorder="1">Kuzmin_2021</bcf:citekey>
+    <bcf:citekey order="8" intorder="1">Li_2021</bcf:citekey>
+    <bcf:citekey order="9" intorder="1">Li_2021</bcf:citekey>
+    <bcf:citekey order="10" intorder="1">Brand_2020</bcf:citekey>
+    <bcf:citekey order="11" intorder="1">Brand_2020</bcf:citekey>
+    <bcf:citekey order="12" intorder="1">Li_2021</bcf:citekey>
+    <bcf:citekey order="13" intorder="1">Li_2021</bcf:citekey>
+    <bcf:citekey order="14" intorder="1">Li_2021</bcf:citekey>
+    <bcf:citekey order="15" intorder="1">Kuzmin_2021</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="ynt">
