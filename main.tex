@@ -26,17 +26,12 @@
 \tableofcontents
 
 % General TODOs:
-% - The code and numerical examples can actually be removed,
-%       -> maybe good visualizations (not the ones present now) can still be included for a better understanding
-%       -> maybe in the Appendix, all together
-% - The part on cutoff can be removed, especially if I don't focus on cutoffs at all!
-% - The whole discussion can be a bit simplified by considering Li et. al only
-%       -> still I don't wanna do it, I think Brand is good for swapping, is easier to grasp first
-%       -> maybe the whole concept of forgetting sum in the W. parameter is tough, that can be simplified
-
-
-
-
+% Maybe good visualizations (not the ones present now) can still be included for a better understanding
+% -> maybe in the Appendix, all together
+% Make sure all elements of Li Table are fully covered
+% Add a discussion on classical communication and use it consistenly
+% Make sure (out) or (n+1) pedixes are used consistently
+% Avoid discussing cutoffs
 
 \chapter{Mathematical Model for Waiting Time and Fidelity}
 
@@ -44,8 +39,9 @@ In this chapter, we present a mathematical model for the waiting time and fideli
 
 The model described in this section is entirely based on the work of Li et al.~\cite{Li_2021}, which builds upon the work of Brand et al.~\cite{Brand_2020}.
 
-I did not introduce any new concepts or results, but rather focused on explaining the mathematical model used in the paper, providing a clear and concise explanation.
-The only personal contribution are the numerical examples included, useful for understanding the model (and not present in the original paper).
+We merge and simplify the discussion by not considering cutoffs, introduced by Li \textit{et al.}, and by including examples and visualizations to explain concepts that are underlined in the original works.
+The objective of this chapter is to provide a clear and comprehensive explanation of the mathematical model behind the algorithm used to simulate a single repeater chain protocol, which takes in input the hardware parameters for the chain and returns the probability mass function (PMF) of the waiting time and the Werner parameter of the output entangled link.
+
 
 \section{Introduction}
 
