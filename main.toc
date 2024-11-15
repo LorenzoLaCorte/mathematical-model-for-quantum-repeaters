@@ -1,9 +1,9 @@
 \contentsline {chapter}{Chapter\ \numberline {1}Mathematical Model for Waiting Time and Fidelity}{4}{chapter.1}%
-\contentsline {section}{\numberline {1.1}Introduction}{4}{section.1.1}%
+\contentsline {section}{\numberline {1.1}Introduction}{5}{section.1.1}%
 \contentsline {section}{\numberline {1.2}Heraldeld Entanglement Generation}{6}{section.1.2}%
 \contentsline {subsection}{\numberline {1.2.1}Waiting Time for Elementary Entanglement}{6}{subsection.1.2.1}%
 \contentsline {subsection}{\numberline {1.2.2}Werner Parameter for Elementary Entanglement}{6}{subsection.1.2.2}%
-\contentsline {section}{\numberline {1.3}Entanglement Swapping}{6}{section.1.3}%
+\contentsline {section}{\numberline {1.3}Entanglement Swapping}{7}{section.1.3}%
 \contentsline {subsection}{\numberline {1.3.1}Waiting Time for Entanglement Swapping}{7}{subsection.1.3.1}%
 \contentsline {subsection}{\numberline {1.3.2}Werner Parameter for Entanglement Swapping}{9}{subsection.1.3.2}%
 \contentsline {section}{\numberline {1.4}Entanglement Distillation}{12}{section.1.4}%
